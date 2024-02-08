@@ -17,7 +17,8 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<bs>", "<nop>")
+vim.keymap.set("n", "q:", "<nop>")
+vim.keymap.set("", "<bs>", "<nop>")
 
 vim.keymap.set({ "n", "v" }, "d", '"_d')
 vim.keymap.set({ "n", "v" }, "D", '"_D')
