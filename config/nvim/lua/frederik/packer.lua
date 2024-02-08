@@ -36,6 +36,8 @@ return require('packer').startup(function(use)
     }
   }
 
+  use 'mhartington/formatter.nvim'
+
   use {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
