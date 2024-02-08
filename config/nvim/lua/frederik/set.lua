@@ -31,3 +31,6 @@ vim.opt.colorcolumn = "80"
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.fillchars = { eob = " " }
+
+vim.cmd.aunmenu({ "PopUp.How-to\\ disable\\ mouse" })
+vim.cmd.aunmenu({ "PopUp.-1-" })

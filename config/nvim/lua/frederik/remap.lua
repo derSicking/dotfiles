@@ -19,11 +19,11 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<bs>", "<nop>")
 
-vim.keymap.set({"n", "v"}, "d", '"_d')
-vim.keymap.set({"n", "v"}, "D", '"_D')
-vim.keymap.set({"n", "v"}, "<bs>", '"_d')
-vim.keymap.set({"n", "v"}, "c", '"_c')
-vim.keymap.set({"n", "v"}, "C", '"_C')
+vim.keymap.set({ "n", "v" }, "d", '"_d')
+vim.keymap.set({ "n", "v" }, "D", '"_D')
+vim.keymap.set({ "n", "v" }, "<bs>", '"_d')
+vim.keymap.set({ "n", "v" }, "c", '"_c')
+vim.keymap.set({ "n", "v" }, "C", '"_C')
 
 vim.keymap.set("n", "dd", '"_dd')
 vim.keymap.set("n", "cc", '"_cc')
@@ -35,3 +35,4 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<cr>")
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 
+vim.keymap.set("", "<RightMouse>", "<nop>")
