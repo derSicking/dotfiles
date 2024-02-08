@@ -14,9 +14,6 @@ require("formatter").setup({
 		html = {
 			require("formatter.filetypes.html").prettier,
 		},
-		["*"] = {
-			require("formatter.filetypes.any").remove_trailing_whitespace,
-		},
 	},
 })
 
