@@ -1,0 +1,7 @@
+[init]
+	defaultBranch = main
+[user]
+	name = Frederik Sicking
+	email = frederik.sicking@gmail.com
+[core]
+	editor = vim

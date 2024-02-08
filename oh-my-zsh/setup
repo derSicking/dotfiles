@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Setup for Oh My Zsh"
+
+# Don't do anything if a .oh-my-zsh config directory exists
+if [ -d $HOME/.oh-my-zsh/ ]; then
+  echo ".oh-my-zsh directory found, skipping"
+  exit 0
+fi
+
+# Install Oh My Zsh using wget as stated on https://github.com/ohmyzsh/ohmyzsh
+
+sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Install powerlevel10k
+
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+
+# Make sure to install the recommended font
+# https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+
+# Install zsh-autosuggestions
+
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
