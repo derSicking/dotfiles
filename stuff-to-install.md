@@ -28,6 +28,7 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 - neovim
 - eza
 - docker
+- tpm
 - nodejs
 - npm
 - nvm

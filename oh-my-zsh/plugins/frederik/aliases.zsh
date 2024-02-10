@@ -17,7 +17,7 @@ alias vi.="nvim-dir ."
 alias v.="nvim-dir ."
 
 __get_tmux_name() {
-  readlink -f "$1" | tr .: _
+  basename $(readlink -f "$1") | tr .: _
 }
 
 __tmux_nvim_named() {
@@ -47,12 +47,12 @@ alias tv="tmux-nvim"
 
 DOT=$HOME/.dotfiles
 
-alias configure-nvim="nvim-dir $DOT/config/nvim/"
-alias configure-zsh="nvim-dir $DOT/oh-my-zsh/plugins/frederik/"
-alias configure-i3="nvim-dir $DOT/config/i3/config"
+alias configure-nvim="tmux-nvim $DOT/config/nvim/"
+alias configure-zsh="tmux-nvim $DOT/oh-my-zsh/plugins/frederik/"
+alias configure-i3="tmux-nvim $DOT/config/i3/config"
 alias configure-alacritty="nvim-dir $DOT/config/alacritty/alacritty.toml"
-alias configure-tmux="nvim-dir $DOT/config/tmux/tmux.conf"
-alias configure-dotfiles="nvim-dir $HOME/.dotfiles"
+alias configure-tmux="tmux-nvim $DOT/config/tmux/"
+alias configure-dotfiles="tmux-nvim $HOME/.dotfiles"
 
 alias :q="exit"
 

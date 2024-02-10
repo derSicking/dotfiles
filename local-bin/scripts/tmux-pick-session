@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+if [[ $# -gt 1 ]]; then
+  exit 1
+fi
+
+__echo_lines() {
+  while read p; do
+    eval echo "$p"
+  done < "$1" | sed "/^$/d"
+}
+
+__all_sessions() {
+  # Find all directories inside parent dirs listed in find-dirs.conf
+  find -L $(__echo_lines "$HOME/.config/tmux/find-dirs.conf") \
+    -mindepth 1 -maxdepth 1 -type d \
+    | grep --color=never ".*/[^.][^/]*$";
+
+  # Output all session directories listed in session-dirs.conf
+  __echo_lines "$HOME/.config/tmux/session-dirs.conf";
+}
+
+if [[ $# -eq 1 ]]; then
+  selected=$1
+else
+  selected=$(__all_sessions | fzf)
+fi
+
+if [[ -z $selected ]]; then
+  exit 0
+fi
+
+selected_name=$(basename "$selected" | tr .: _)
+
+if [[ -z $TMUX ]]; then
+  tmux new-session -s $selected_name -c $selected -A
+  exit 0
+fi
+
+if ! tmux has-session -t=$selected_name 2> /dev/null; then
+  tmux new-session -ds $selected_name -c $selected
+fi
+
+tmux switch-client -t $selected_name
