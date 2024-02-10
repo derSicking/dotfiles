@@ -34,6 +34,9 @@ vim.keymap.set("x", "p", '"_dP')
 
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<cr>")
 
+vim.keymap.set("n", "<leader>%", ":vsplit<cr>")
+vim.keymap.set("n", '<leader>"', ":split<cr>")
+
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 
 vim.keymap.set("", "<RightMouse>", "<nop>")

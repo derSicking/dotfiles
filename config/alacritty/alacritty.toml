@@ -19,3 +19,8 @@ white =   '0xD4D4D4'
 padding.x = 10
 padding.y = 10
 
+[[keyboard.bindings]]
+key = "F"
+mods = "Control | Shift"
+action = "ReceiveChar"
+

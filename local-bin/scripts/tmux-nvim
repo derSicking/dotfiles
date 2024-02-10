@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+
+__get_tmux_name() {
+  basename $(readlink -f "$1") | tr .: _
+}
+
+__tmux_session_has_nvim() {
+  pane_list=$(tmux list-panes -s -t "$1" -F "#{pane_tty};#{window_index}.#{pane_index}" | cut -c 6-)
+  tty_list=$(echo $pane_list | awk -F ";" '{print $1}' | tr '\n' '|' | sed 's/|$//')
+  ps_list=$(ps -e -o tty,comm | grep -E "^($tty_list)")
+  pane_tty=$(echo $ps_list | grep "nvim$" | head -n1 | awk '{print $1}')
+  if [ -z $pane_tty ]; then
+    return 1
+  fi
+  echo $pane_list | grep -E "^($pane_tty)" | awk -F ";" '{print $2}'
+  return 0
+}
+
+__tmux_nvim_named() {
+  if ! /usr/bin/tmux has-session -t "$2"; then
+    /usr/bin/tmux new-session -s "$2" -c "$1" -d
+    /usr/bin/tmux send-keys -t "$2" "nvim-dir "$(readlink -f "$1")"" Enter
+  else
+    nvim_pane=$(__tmux_session_has_nvim "$2")
+    if [ -z "$nvim_pane" ]; then
+      /usr/bin/tmux new-window -b -t "$2:1"
+      /usr/bin/tmux send-keys -t "$2" "nvim-dir "$(readlink -f "$1")"" Enter
+    else
+      /usr/bin/tmux select-window -t "$2:$nvim_pane"
+      /usr/bin/tmux select-pane -t "$2:$nvim_pane"
+    fi
+  fi
+  if [ -z $TMUX ]; then
+    /usr/bin/tmux attach -t "$2"
+  else
+    /usr/bin/tmux switch-client -t "$2"
+  fi
+}
+
+if [ "$#" -eq 1 ] && [ -d "$1" ]; then
+  __tmux_nvim_named "$1" "$(__get_tmux_name "$1")"
+elif [ "$#" -eq 2 ] && [ -d "$1" ]; then
+  __tmux_nvim_named "$1" "$2"
+elif [ "$#" -eq 0 ]; then
+  dir=$(select-project-dir)
+  if [ -z "$dir" ]; then return 0; fi
+  tmux-nvim "$dir"
+fi

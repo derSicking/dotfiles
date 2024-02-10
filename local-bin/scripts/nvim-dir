@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$#" -eq 1 ] && [ -d "$1" ]; then
+  /usr/bin/nvim +"cd $1" "$1"
+else
+  /usr/bin/nvim $@
+fi
