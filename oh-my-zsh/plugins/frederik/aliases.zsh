@@ -20,7 +20,7 @@ DOT=$HOME/.dotfiles
 
 alias configure-nvim="tmux-nvim $DOT/config/nvim/"
 alias configure-zsh="tmux-nvim $DOT/oh-my-zsh/plugins/frederik/"
-alias configure-i3="tmux-nvim $DOT/config/i3/config"
+alias configure-i3="tmux-nvim $DOT/config/i3"
 alias configure-alacritty="nvim-dir $DOT/config/alacritty/alacritty.toml"
 alias configure-tmux="tmux-nvim $DOT/config/tmux/"
 alias configure-dotfiles="tmux-nvim $HOME/.dotfiles"
