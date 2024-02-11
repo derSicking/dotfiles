@@ -6,10 +6,10 @@ cd "$SCRIPT_DIR"
 
 # Run all 'setup' scripts
 echo "Runing all setup scripts..."
-find -name "setup" -exec "{}" \;
+find -name "dotfile_setup" -exec "{}" \;
 echo -e "Setups done\n"
 
 # Run all 'link' scripts
 echo "Runing all link scripts..."
-find -name "link" -exec "{}" \;
+find -name "dotfile_link" -exec "{}" \;
 echo -e "Links done\n"

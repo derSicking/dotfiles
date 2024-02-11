@@ -6,4 +6,4 @@ echo "Creating symlinks for .config ($SCRIPT_DIR)"
 
 ln -sf "$SCRIPT_DIR"/* $HOME/.config/
 
-rm $HOME/.config/link
+rm $HOME/.config/dotfile_link

@@ -25,3 +25,4 @@ alias lat4="__eza_long_tree_all -L=4"
 alias lat5="__eza_long_tree_all -L=5"
 
 alias tree="__eza_long_tree"
+alias treea="__eza_long_tree_all"

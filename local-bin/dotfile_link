@@ -7,4 +7,4 @@ echo "Creating symlinks for .local/bin ($SCRIPT_DIR)"
 shopt -s dotglob
 ln -sf "$SCRIPT_DIR"/* $HOME/.local/bin/
 
-rm $HOME/.local/bin/link
+rm $HOME/.local/bin/dotfile_link

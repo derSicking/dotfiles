@@ -10,8 +10,13 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 
 ## Display
 
-- X11
+- xorg-server
+- xorg-apps
+- xorg-xinit
 - i3-wm
+- Video Drivers
+- xclip
+- dmenu
 
 ## Shell
 
@@ -23,32 +28,38 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 
 ## Tools
 
+### pacman
+
 - tmux
 - fzf
 - neovim
 - eza
 - docker
-- tpm
 - nodejs
 - npm
-- nvm
 - rust
 - ripgrep
 - unzip
-- xclip
-- dmenu
 - polkit
+- bat
+- htop
+- openssh
 
-## npm
+### AUR
+
+- nvim-packer-git
+- nvm
+- ttf-meslo-nerd-font-powerlevel10k
+
+### Manual
+
+- tpm
+
+### npm
 
 - @devcontainers/cli
 
-## cargo
+### cargo
 
 - stylua
 
-## Recommended
-
-- bat
-- htop
-- ttf-meslo-nerd-font-powerlevel10k

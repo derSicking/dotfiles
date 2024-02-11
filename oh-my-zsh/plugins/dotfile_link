@@ -6,4 +6,4 @@ echo "Creating symlinks for .oh-my-zsh/custom/plugins ($SCRIPT_DIR)"
 
 ln -sf "$SCRIPT_DIR"/* $HOME/.oh-my-zsh/custom/plugins/
 
-rm $HOME/.oh-my-zsh/custom/plugins/link
+rm $HOME/.oh-my-zsh/custom/plugins/dotfile_link
