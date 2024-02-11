@@ -5,11 +5,11 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "$SCRIPT_DIR"
 
 # Run all 'setup' scripts
-echo "Runing all setup scripts..."
+echo "Running all setup scripts..."
 find -name "dotfile_setup" -exec "{}" \;
 echo -e "Setups done\n"
 
 # Run all 'link' scripts
-echo "Runing all link scripts..."
+echo "Running all link scripts..."
 find -name "dotfile_link" -exec "{}" \;
 echo -e "Links done\n"

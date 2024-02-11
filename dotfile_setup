@@ -15,3 +15,10 @@ else
   ) && \. "$NVM_DIR/nvm.sh"
 fi
 
+echo "Setup for tpm"
+
+if [ -d $HOME/.tmux/plugins/tpm ]; then
+  echo "tpm directory found, skipping"
+else
+  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+fi
