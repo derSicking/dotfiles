@@ -8,6 +8,9 @@ alias vim.="nvim-dir ."
 alias vi.="nvim-dir ."
 alias v.="nvim-dir ."
 
+alias sudo-nvim="sudo -E nvim"
+alias sv="sudo-nvim"
+
 alias tnvim="tmux-nvim"
 alias tvim="tmux-nvim"
 alias tvi="tmux-nvim"
