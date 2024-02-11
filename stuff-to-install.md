@@ -48,7 +48,6 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 ### AUR
 
 - nvim-packer-git
-- nvm
 - ttf-meslo-nerd-font-powerlevel10k
 
 ### Manual
