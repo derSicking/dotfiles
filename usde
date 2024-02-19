@@ -1,4 +1,5 @@
 // Keyboard layouts for the United States of America with german Umlauts added.
+// Link this to /usr/share/X11/xkb/symbols/
 
 default partial alphanumeric_keys modifier_keys
 xkb_symbols "basic" {

@@ -53,6 +53,8 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 - bat
 - htop
 - openssh
+- acpi
+- interception-caps2esc
 
 ### AUR
 
@@ -65,4 +67,3 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 ### cargo
 
 - stylua
-
