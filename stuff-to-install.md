@@ -19,6 +19,14 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 - xclip
 - dmenu
 
+## Audio
+
+- pipewire
+- wireplumber
+- pipewire-audio
+- pipewire-alsa
+- pipewire-pulse
+
 ## Shell
 
 - zsh

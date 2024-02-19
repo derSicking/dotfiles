@@ -72,9 +72,5 @@ return require("packer").startup(function(use)
 
 	use("epwalsh/obsidian.nvim")
 
-	use({ "prurigro/vim-markdown-concealed", requires = {
-		"godlygeek/tabular",
-	} })
-
 	use("~/devcontainer.nvim")
 end)

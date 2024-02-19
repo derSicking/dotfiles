@@ -187,6 +187,7 @@ bar {
 }
 
 exec --no-startup-id VBoxClient-all
+exec --no-startup-id picom
 
 bindsym $mod+g exec google-chrome-stable
 
