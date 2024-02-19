@@ -14,6 +14,7 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 - xorg-apps
 - xorg-xinit
 - i3-wm
+- picom
 - Video Drivers
 - xclip
 - dmenu

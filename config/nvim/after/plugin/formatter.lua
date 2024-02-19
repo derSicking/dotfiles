@@ -14,6 +14,9 @@ require("formatter").setup({
 		html = {
 			require("formatter.filetypes.html").prettier,
 		},
+		markdown = {
+			require("formatter.filetypes.markdown").prettier,
+		},
 	},
 })
 

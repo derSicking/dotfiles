@@ -12,12 +12,17 @@ return require("packer").startup(function(use)
 		-- or                          , branch = '0.1.x',
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
-	use("Mofiqul/vscode.nvim")
+
+	use("folke/tokyonight.nvim")
+	use("lukas-reineke/indent-blankline.nvim")
+
 	use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
 	use("theprimeagen/harpoon")
 	use("mbbill/undotree")
 	use("tpope/vim-fugitive")
 	use("tpope/vim-commentary")
+	use("smjonas/inc-rename.nvim")
+	use("kylechui/nvim-surround")
 
 	use({
 		"VonHeikemen/lsp-zero.nvim",
@@ -61,8 +66,15 @@ return require("packer").startup(function(use)
 
 	use("christoomey/vim-tmux-navigator")
 
-	use("~/devcontainer.nvim")
+	use({ "nvim-pack/nvim-spectre", requires = {
+		"nvim-lua/plenary.nvim",
+	} })
 
-	use("Iron-E/nvim-libmodal")
-	use("~/nvim-normie")
+	use("epwalsh/obsidian.nvim")
+
+	use({ "prurigro/vim-markdown-concealed", requires = {
+		"godlygeek/tabular",
+	} })
+
+	use("~/devcontainer.nvim")
 end)

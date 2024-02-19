@@ -17,6 +17,7 @@ vim.keymap.set("n", "<C-p>", function()
 	if ret == 0 then
 		builtin.git_files({
 			use_git_root = false,
+			show_untracked = true,
 		})
 	else
 		builtin.find_files({
