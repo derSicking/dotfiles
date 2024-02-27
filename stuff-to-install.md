@@ -27,6 +27,13 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 - pipewire-alsa
 - pipewire-pulse
 
+## Bluetooth
+
+- bluez
+- bluez-utils
+
+Enable `bluetooth.service`
+
 ## Shell
 
 - zsh
@@ -59,6 +66,8 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 ### AUR
 
 - ttf-meslo-nerd-font-powerlevel10k
+- google-chrome
+- bluetuith
 
 ### npm
 
