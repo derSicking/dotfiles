@@ -5,3 +5,4 @@
 	email = frederik.sicking@gmail.com
 [core]
 	editor = vim
+  quotepath = false

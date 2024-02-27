@@ -1,10 +1,11 @@
 require("obsidian").setup({
 	workspaces = require("frederik.obsidian-workspaces"),
+	disable_frontmatter = true,
 	note_id_func = function(title)
 		local filename = ""
 		if title ~= nil then
 			-- If title is given, transform it into valid file name.
-			filename = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+			filename = title
 		else
 			-- If title is nil, just add 4 random uppercase letters to the filename.
 			for _ = 1, 4 do
@@ -16,3 +17,8 @@ require("obsidian").setup({
 })
 
 vim.opt.conceallevel = 2
+
+vim.keymap.set("n", "<leader>oo", ":ObsidianQuickSwitch<cr>")
+vim.keymap.set("n", "<leader>on", ":ObsidianNew ")
+vim.keymap.set("n", "<leader>ob", ":ObsidianBacklinks<cr>")
+vim.keymap.set("n", "<leader>ol", ":ObsidianLinks<cr>")

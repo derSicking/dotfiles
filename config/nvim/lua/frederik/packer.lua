@@ -17,12 +17,15 @@ return require("packer").startup(function(use)
 	use("lukas-reineke/indent-blankline.nvim")
 
 	use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
+	use("aklt/plantuml-syntax")
+
 	use("theprimeagen/harpoon")
 	use("mbbill/undotree")
 	use("tpope/vim-fugitive")
 	use("tpope/vim-commentary")
 	use("smjonas/inc-rename.nvim")
 	use("kylechui/nvim-surround")
+	use("m4xshen/autoclose.nvim")
 
 	use({
 		"VonHeikemen/lsp-zero.nvim",
