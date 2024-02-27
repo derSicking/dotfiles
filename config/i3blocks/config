@@ -1,0 +1,14 @@
+[volume-pipewire]
+command=$HOME/.config/i3blocks/scripts/volume-pipewire
+interval=persist
+SUBSCRIBE=1
+USE_ALSA_NAME=1
+
+[battery]
+command=$HOME/.config/i3blocks/scripts/battery.orig
+markup=pango
+interval=30
+
+[date]
+command=$HOME/.config/i3blocks/scripts/date
+interval=1
