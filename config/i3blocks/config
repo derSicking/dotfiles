@@ -1,5 +1,6 @@
 [volume-pipewire]
 command=$HOME/.config/i3blocks/scripts/volume-pipewire
+markup=pango
 interval=persist
 SUBSCRIBE=1
 USE_ALSA_NAME=1

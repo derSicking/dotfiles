@@ -159,7 +159,7 @@ require("child_process").exec("acpi -abi", (_error, stdout, _stderr) => {
 
   const percentStr = Number(totalPercentage * 100).toFixed(0);
 
-  const batteryIcon =
+  let batteryIcon =
     totalPercentage > 0.8
       ? "\uf240"
       : totalPercentage > 0.6
@@ -170,7 +170,14 @@ require("child_process").exec("acpi -abi", (_error, stdout, _stderr) => {
             ? "\uf243"
             : "\uf244";
 
-  const plugIcon = "\uf1e6";
+  batteryIcon = `<span size='15pt' rise='-2pt'>${batteryIcon}</span>`;
+  if (totalPercentage < 0.1) {
+    batteryIcon = `<span foreground='red'>${batteryIcon}</span>`;
+  } else if (totalPercentage < 0.2) {
+    batteryIcon = `<span foreground='yellow'>${batteryIcon}</span>`;
+  }
+
+  const plugIcon = "<span size='14pt' rise='-1pt'>\uf1e6</span>";
 
   const isCharging = Object.keys(batteries)
     .map((key) => batteries[key])
