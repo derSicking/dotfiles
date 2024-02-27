@@ -17,7 +17,7 @@ __tmux_session_has_nvim() {
 }
 
 __tmux_nvim_named() {
-  if ! /usr/bin/tmux has-session -t "$2"; then
+  if ! /usr/bin/tmux has-session -t="$2"; then
     /usr/bin/tmux new-session -s "$2" -c "$1" -d
     /usr/bin/tmux send-keys -t "$2" "nvim-dir "$(readlink -f "$1")"" Enter
   else
