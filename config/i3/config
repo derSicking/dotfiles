@@ -185,6 +185,7 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3blocks
 }
+font pango:MesloLGS NF 10
 
 exec --no-startup-id VBoxClient-all
 exec --no-startup-id picom

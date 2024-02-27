@@ -5,9 +5,9 @@ SUBSCRIBE=1
 USE_ALSA_NAME=1
 
 [battery]
-command=$HOME/.config/i3blocks/scripts/battery.orig
+command=$HOME/.config/i3blocks/scripts/battery
 markup=pango
-interval=30
+interval=10
 
 [date]
 command=$HOME/.config/i3blocks/scripts/date
