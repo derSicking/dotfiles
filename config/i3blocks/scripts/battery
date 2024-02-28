@@ -188,8 +188,12 @@ require("child_process").exec("acpi -abi", (_error, stdout, _stderr) => {
   } else if (isPluggedIn && isCharging) {
     console.log(` ${batteryIcon} ${percentStr}% ${plugIcon} `);
   } else if (!timeRemainingStr) {
-    console.log(` ${batteryIcon} ${percentStr}%`);
+    console.log(
+      ` ${batteryIcon} ${percentStr}%<span letter_spacing='-10000'> </span>`,
+    );
   } else {
-    console.log(` ${batteryIcon} ${percentStr}% (${timeRemainingStr})`);
+    console.log(
+      ` ${batteryIcon} ${percentStr}% (${timeRemainingStr})<span letter_spacing='-10000'> </span>`,
+    );
   }
 });
