@@ -16,7 +16,13 @@ require("obsidian").setup({
 	end,
 })
 
-vim.opt.conceallevel = 2
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	group = vim.api.nvim_create_augroup("md-conceallevel", { clear = true }),
+	callback = function(_)
+		vim.opt.conceallevel = 2
+	end,
+})
 
 vim.keymap.set("n", "<leader>oo", ":ObsidianQuickSwitch<cr>")
 vim.keymap.set("n", "<leader>on", ":ObsidianNew ")
