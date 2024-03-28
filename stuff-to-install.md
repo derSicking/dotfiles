@@ -34,6 +34,14 @@ that need to be installed outside of (i.e. before) the installation of the dotfi
 
 Enable `bluetooth.service`
 
+## Network
+
+- networkmanager
+- network-manager-applet
+- nm-connection-editor
+
+Enable `NetworkManager.service`
+
 ## Shell
 
 - zsh
