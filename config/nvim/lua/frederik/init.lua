@@ -1,3 +1,4 @@
 require("frederik.remap")
-require("frederik.packer")
 require("frederik.set")
+require("frederik.lazy")
+require("frederik.filetypes")

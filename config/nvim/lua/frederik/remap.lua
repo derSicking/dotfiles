@@ -41,5 +41,3 @@ vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>Q", ":q<cr>")
 
 vim.keymap.set("", "<RightMouse>", "<nop>")
-
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.code_action)

@@ -1,0 +1,18 @@
+{
+  "ftcmd": {
+    "body": [
+      "vim.api.nvim_create_autocmd(\"FileType\", {",
+      "  pattern = \"$1\",",
+      "  group = vim.api.nvim_create_augroup(\"$1-$2\", { clear = true }),",
+      "  callback = function()",
+      "    $3",
+      "  end,",
+      "})"
+    ],
+    "prefix": "ftcmd"
+  },
+  "log": {
+    "body": "vim.print($1)",
+    "prefix": "log"
+  }
+}
