@@ -20,7 +20,7 @@ return {
 
 		-- Formatters
 		"stylua",
-		"prettier",
+		"prettierd",
 		"google-java-format",
 
 		-- Linters
