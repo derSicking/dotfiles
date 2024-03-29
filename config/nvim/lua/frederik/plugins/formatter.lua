@@ -1,6 +1,8 @@
 return {
 	"mhartington/formatter.nvim",
-	opts = require("frederik.formatter"),
+	config = function ()
+		require("formatter").setup(require("frederik.formatter"))
+	end,
 	init = function()
 		local augroup = vim.api.nvim_create_augroup
 		local autocmd = vim.api.nvim_create_autocmd
