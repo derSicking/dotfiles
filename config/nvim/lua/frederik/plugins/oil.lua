@@ -1,10 +1,10 @@
 return {
 	"stevearc/oil.nvim",
-  lazy = false,
-  priority = 500,
-  dependencies = {
-    { "nvim-tree/nvim-web-devicons", lazy = true }
-  },
+	lazy = false,
+	priority = 500,
+	dependencies = {
+		{ "nvim-tree/nvim-web-devicons", lazy = true },
+	},
 	opts = {
 		-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 		-- Set to false if you still want to use netrw.
@@ -149,8 +149,8 @@ return {
 			},
 		},
 	},
-  keys = {
-    { "<leader>e", vim.cmd.Oil },
-    { "-", vim.cmd.Oil },
-  },
+	keys = {
+		{ "<leader>e", vim.cmd.Oil },
+		{ "-", vim.cmd.Oil },
+	},
 }

@@ -32,5 +32,8 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.fillchars = { eob = " " }
 
+vim.opt.guicursor =
+	"n-v-c:block,i-ci-ve:ver25,r-cr-o:hor25,i-ci-ve:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+
 vim.cmd.aunmenu({ "PopUp.How-to\\ disable\\ mouse" })
 vim.cmd.aunmenu({ "PopUp.-1-" })

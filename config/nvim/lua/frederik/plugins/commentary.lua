@@ -3,6 +3,6 @@ return {
 	cmd = "Commentary",
 	keys = {
 		{ "gcc" },
-		{ "gc", nil, "v" },
+		{ "gc", mode = "v" },
 	},
 }

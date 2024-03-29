@@ -15,6 +15,8 @@ return {
 		"typescript-language-server",
 		"angular-language-server",
 		"emmet-language-server",
+		"html-lsp",
+		"css-lsp",
 
 		-- Formatters
 		"stylua",

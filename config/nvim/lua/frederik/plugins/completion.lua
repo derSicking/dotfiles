@@ -57,7 +57,6 @@ return {
 				function()
 					require("scissors").addNewSnippet()
 				end,
-				{ "n", "x" },
 			},
 		},
 	},
