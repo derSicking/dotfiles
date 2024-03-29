@@ -26,6 +26,9 @@ return {
 		-- Linters
 		"eslint_d",
 
+		-- Debug Adapters
+		"java-debug-adapter",
+
 		-- Tools
 		"tree-sitter-cli",
 		"jq",
@@ -43,8 +46,21 @@ return {
 				pattern = "java",
 				group = vim.api.nvim_create_augroup("jdtls_start", {}),
 				callback = function()
+					vim.api.nvim_create_autocmd("LspAttach", {
+						buffer = 0,
+						group = vim.api.nvim_create_augroup("jdtls_start", {}),
+						callback = function()
+							require("jdtls.dap").setup_dap_main_class_configs()
+						end,
+					})
 					require("jdtls").start_or_attach({
 						cmd = { "jdtls" },
+						init_options = {
+							bundles = {
+								vim.fn.stdpath("data")
+									.. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar",
+							},
+						},
 					})
 					on_attach()
 				end,

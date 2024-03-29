@@ -12,6 +12,12 @@
           "typescript"
         ],
         "path": "./typescript.json"
+      },
+      {
+        "language": [
+          "java"
+        ],
+        "path": "./java.json"
       }
     ]
   },

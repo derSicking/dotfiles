@@ -1,0 +1,9 @@
+{
+  "sysout + log": {
+    "body": "System.out.println($0)",
+    "prefix": [
+      "sysout",
+      "log"
+    ]
+  }
+}
