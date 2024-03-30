@@ -76,6 +76,7 @@ Enable `NetworkManager.service`
 - ttf-meslo-nerd-font-powerlevel10k
 - google-chrome
 - bluetuith
+- backlight_control
 
 ### npm
 
