@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Shutdown
+Comment=Shut the machine down
+Exec=shut

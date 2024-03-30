@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Suspend
+Comment=Suspend the machine
+Exec=sus

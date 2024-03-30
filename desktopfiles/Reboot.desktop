@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Reboot
+Comment=Reboot the machine
+Exec=reboot

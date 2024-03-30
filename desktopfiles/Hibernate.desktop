@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Hibernate
+Comment=Hibernate the machine
+Exec=hib

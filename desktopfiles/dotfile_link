@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+echo "Creating symlinks for desktopfiles ($HOME/.local/share/applications/desktopfiles/ from $SCRIPT_DIR)"
+
+shopt -s dotglob
+ln -sf "$SCRIPT_DIR" $HOME/.local/share/applications/desktopfiles

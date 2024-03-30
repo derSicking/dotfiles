@@ -77,6 +77,7 @@ Enable `NetworkManager.service`
 - google-chrome
 - bluetuith
 - backlight_control
+- j4-dmenu-desktop
 
 ### npm
 
