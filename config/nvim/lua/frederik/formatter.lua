@@ -1,3 +1,5 @@
+local util = require("formatter.util")
+
 return {
 	filetype = {
 		lua = {
@@ -18,7 +20,13 @@ return {
 			require("formatter.filetypes.css").prettierd,
 		},
 		markdown = {
-			require("formatter.filetypes.markdown").prettierd,
+			function()
+				return {
+					exe = "prettierd",
+					args = { '--prose-wrap="always"', util.escape_path(util.get_current_buffer_file_path()) },
+					stdin = true,
+				}
+			end,
 		},
 		java = {
 			require("formatter.filetypes.java").google_java_format,

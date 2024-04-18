@@ -1,4 +1,8 @@
+local utils = require("frederik.utils")
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+local ltex_lang = "en-US"
 
 local on_attach = function()
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
@@ -17,6 +21,7 @@ return {
 		"emmet-language-server",
 		"html-lsp",
 		"css-lsp",
+		"ltex-ls",
 
 		-- Formatters
 		"stylua",
@@ -38,6 +43,55 @@ return {
 		-- Default Handler (lspconfig)
 		function(server_name)
 			require("lspconfig")[server_name].setup({ on_attach = on_attach, capabilities = capabilities })
+		end,
+
+		-- Latex and Markdown: ltex-client.nvim
+		["ltex"] = function()
+			local ltex_path = vim.env.HOME .. "/.ltex/dictionaries"
+			local ltex_language_settings_path = ltex_path .. "/language_settings.json"
+			require("ltex-client").setup({
+				user_dictionaries_path = ltex_path,
+			})
+			local settingsFromFile = utils.get_json_file_as_table(ltex_language_settings_path)
+			if settingsFromFile ~= nil then
+				for _, setting in ipairs(settingsFromFile) do
+					if setting.dir == vim.fn.getcwd() then
+						ltex_lang = setting.lang
+						break
+					end
+				end
+			end
+			require("lspconfig")["ltex"].setup({
+				on_attach = function(_, bufnr)
+					on_attach()
+					require("ltex-client.server").update_configuration({ language = ltex_lang })
+					vim.api.nvim_buf_create_user_command(bufnr, "SetProjectLanguage", function(args)
+						local allLanguageSettings = utils.get_json_file_as_table(ltex_language_settings_path)
+						if allLanguageSettings == nil then
+							allLanguageSettings = {}
+						end
+						local exists = false
+						for _, setting in ipairs(allLanguageSettings) do
+							if setting.dir == vim.fn.getcwd() then
+								exists = true
+								setting.lang = args.args
+								break
+							end
+						end
+						if not exists then
+							table.insert(allLanguageSettings, { dir = vim.fn.getcwd(), lang = args.args })
+						end
+						utils.store_table_as_json(ltex_language_settings_path, allLanguageSettings)
+						require("ltex-client.server").update_configuration({ language = args.args })
+					end, { nargs = 1 })
+				end,
+				capabilities = capabilities,
+				settings = {
+					ltex = {
+						language = ltex_lang,
+					},
+				},
+			})
 		end,
 
 		-- Java: ldtls-nvim
