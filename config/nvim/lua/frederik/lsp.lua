@@ -87,6 +87,12 @@ return {
 					end, { nargs = 1 })
 				end,
 				capabilities = capabilities,
+				filetypes = {
+					"tex",
+					"latex",
+					"markdown",
+					"text",
+				},
 				settings = {
 					ltex = {
 						language = ltex_lang,
