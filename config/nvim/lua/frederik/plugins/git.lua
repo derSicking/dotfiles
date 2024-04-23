@@ -20,7 +20,7 @@ return {
 				end
 
 				-- Navigation
-				map("n", "]c", function()
+				map("n", "<leader>hj", function()
 					if vim.wo.diff then
 						return "]c"
 					end
@@ -30,7 +30,7 @@ return {
 					return "<Ignore>"
 				end, { expr = true })
 
-				map("n", "[c", function()
+				map("n", "<leader>hk", function()
 					if vim.wo.diff then
 						return "[c"
 					end
