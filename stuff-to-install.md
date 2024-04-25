@@ -36,9 +36,13 @@ Enable `bluetooth.service`
 
 ## Network
 
-- networkmanager
-- network-manager-applet
-- nm-connection-editor
+- iwd
+- iwdctl
+
+### AUR
+
+- iwgtk
+- snixembed
 
 Enable `NetworkManager.service`
 
