@@ -1,35 +1,34 @@
-local util = require("formatter.util")
+local util = require("conform.util")
 
-return {
-	filetype = {
-		lua = {
-			require("formatter.filetypes.lua").stylua,
-		},
-		javascript = {
-			require("formatter.filetypes.javascript").prettierd,
-			require("formatter.filetypes.javascript").eslint_d,
-		},
-		typescript = {
-			require("formatter.filetypes.typescript").prettierd,
-			require("formatter.filetypes.typescript").eslint_d,
-		},
-		html = {
-			require("formatter.filetypes.html").prettierd,
-		},
-		css = {
-			require("formatter.filetypes.css").prettierd,
-		},
-		markdown = {
-			function()
-				return {
-					exe = "prettierd",
-					args = { '--prose-wrap="always"', util.escape_path(util.get_current_buffer_file_path()) },
-					stdin = true,
-				}
-			end,
-		},
-		java = {
-			require("formatter.filetypes.java").google_java_format,
-		},
-	},
+require("conform").formatters.prettierd_prose_wrap = {
+	command = util.from_node_modules("prettierd"),
+	args = { "--prose-wrap=always", "$FILENAME" },
+	range_args = function(_, ctx)
+		local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
+		return { "--prose-wrap=always", "$FILENAME", "--range-start=" .. start_offset, "--range-end=" .. end_offset }
+	end,
+	cwd = util.root_file({
+		".prettierrc",
+		".prettierrc.json",
+		".prettierrc.yml",
+		".prettierrc.yaml",
+		".prettierrc.json5",
+		".prettierrc.js",
+		".prettierrc.cjs",
+		".prettierrc.mjs",
+		".prettierrc.toml",
+		"prettier.config.js",
+		"prettier.config.cjs",
+		"prettier.config.mjs",
+		"package.json",
+	}),
+}
+
+require("conform").formatters_by_ft = {
+	lua = { "stylua" },
+	javascript = { "prettierd", "eslint_d" },
+	typescript = { "prettierd", "eslint_d" },
+	html = { "prettierd" },
+	css = { "prettierd" },
+	markdown = { "prettierd_prose_wrap" },
 }

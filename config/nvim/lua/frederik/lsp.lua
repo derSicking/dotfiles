@@ -27,7 +27,6 @@ return {
 		-- Formatters
 		"stylua",
 		"prettierd",
-		"google-java-format",
 
 		-- Linters
 		"eslint_d",

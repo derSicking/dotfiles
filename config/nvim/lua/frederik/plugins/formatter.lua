@@ -1,15 +1,14 @@
 return {
-	"mhartington/formatter.nvim",
-	config = function ()
-		require("formatter").setup(require("frederik.formatter"))
-	end,
-	init = function()
-		local augroup = vim.api.nvim_create_augroup
-		local autocmd = vim.api.nvim_create_autocmd
-		augroup("__formatter__", { clear = true })
-		autocmd("BufWritePost", {
-			group = "__formatter__",
-			command = ":FormatWrite",
+	"stevearc/conform.nvim",
+
+	config = function()
+		require("conform").setup({
+			-- log_level = vim.log.levels.DEBUG,
+			format_on_save = {
+				timeout_ms = 500,
+				lsp_fallback = true,
+			},
 		})
+		require("frederik.formatter")
 	end,
 }
