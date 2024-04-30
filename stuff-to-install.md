@@ -1,7 +1,8 @@
 # Stuff to install
 
 These dotfiles contain configuration and setup for and rely on specific tools
-that need to be installed outside of (i.e. before) the installation of the dotfiles.
+that need to be installed outside of (i.e. before) the installation of the
+dotfiles.
 
 ## REQUIRED
 
@@ -74,6 +75,9 @@ Enable `NetworkManager.service`
 - openssh
 - acpi
 - interception-caps2esc
+- jq
+
+Enable `docker.socket` and add user to `docker` group
 
 ### AUR
 
