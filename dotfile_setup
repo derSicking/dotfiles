@@ -23,11 +23,3 @@ else
   git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
 
-echo "Setup for packer"
-
-if [ -d $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
-  echo "packer found, skipping"
-else
-  git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-   ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-fi
