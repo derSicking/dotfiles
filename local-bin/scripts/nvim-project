@@ -1,0 +1,8 @@
+if [ "$#" -ge 1 ] && [ -d "$1" ]; then
+  nvim-dir "$1"
+elif [ "$#" -eq 0 ]; then
+  dir=$(select-project-dir)
+  if [ -z "$dir" ]; then exit 0; fi
+  nvim-dir "$dir"
+fi
+
