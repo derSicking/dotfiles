@@ -28,14 +28,6 @@ return {
 		end,
 	},
 	{
-		"smjonas/inc-rename.nvim",
-		lazy = true,
-		opts = {},
-		keys = {
-			{ "<leader>rn", ":IncRename " },
-		},
-	},
-	{
 		"maan2003/lsp_lines.nvim",
 		opts = {},
 		keys = {

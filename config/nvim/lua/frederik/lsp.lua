@@ -4,13 +4,28 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local ltex_lang = "en-US"
 
+local rename_symbol = function()
+	local old_name = vim.fn.expand("<cword>")
+	local new_name = vim.fn.input("Rename " .. old_name .. ": ")
+	if new_name and string.len(new_name) > 0 then
+		vim.lsp.buf.rename(new_name)
+	end
+end
+
 local on_attach = function()
 	vim.keymap.set({ "n", "v" }, "<leader>f", vim.lsp.buf.code_action, { buffer = 0 })
+	vim.keymap.set("n", "<leader>rn", rename_symbol, { buffer = 0 })
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
 	vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { buffer = 0 })
 	vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { buffer = 0 })
+end
+
+local add_inlay_hint_toggle_bind = function()
+	vim.keymap.set("n", "<leader>ih", function()
+		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+	end, { buffer = 0 })
 end
 
 return {
@@ -46,6 +61,18 @@ return {
 		-- Default Handler (lspconfig)
 		function(server_name)
 			require("lspconfig")[server_name].setup({ on_attach = on_attach, capabilities = capabilities })
+		end,
+
+		-- Lua
+		["lua_ls"] = function()
+			require("lspconfig")["lua_ls"].setup({
+				on_attach = function()
+					on_attach()
+					add_inlay_hint_toggle_bind()
+				end,
+				capabilities = capabilities,
+				settings = { Lua = { hint = { enable = true } } },
+			})
 		end,
 
 		-- Latex and Markdown: ltex-client.nvim
@@ -124,8 +151,15 @@ return {
 									.. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar",
 							},
 						},
+						settings = {
+							java = {
+								inlayHints = { parameterNames = { enabled = "all" } },
+								signatureHelp = { enabled = true },
+							},
+						},
 					})
 					on_attach()
+					add_inlay_hint_toggle_bind()
 				end,
 			})
 		end,
