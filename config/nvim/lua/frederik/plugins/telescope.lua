@@ -1,12 +1,18 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	dependencies = { "nvim-lua/plenary.nvim" },
+	lazy = false,
+	dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-ui-select.nvim" },
 	config = function()
 		local utils = require("telescope.utils")
 		local builtin = require("telescope.builtin")
 		local actions = require("telescope.actions")
 
 		require("telescope").setup({
+			extensions = {
+				["ui-select"] = {
+					require("telescope.themes").get_dropdown({}),
+				},
+			},
 			defaults = {
 				mappings = {
 					i = {
@@ -15,6 +21,8 @@ return {
 				},
 			},
 		})
+
+		require("telescope").load_extension("ui-select")
 
 		vim.keymap.set("n", "<C-p>", function()
 			local _, ret, _ = utils.get_os_command_output({ "git", "rev-parse", "--is-inside-work-tree" })

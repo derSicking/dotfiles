@@ -36,19 +36,6 @@ return {
 		},
 	},
 	{
-		"aznhe21/actions-preview.nvim",
-		lazy = true,
-		keys = {
-			{
-				"<leader>f",
-				function()
-					require("actions-preview").code_actions()
-				end,
-				mode = { "n", "v" },
-			},
-		},
-	},
-	{
 		"maan2003/lsp_lines.nvim",
 		opts = {},
 		keys = {
