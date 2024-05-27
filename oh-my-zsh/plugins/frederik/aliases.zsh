@@ -16,6 +16,10 @@ alias tvim="tmux-nvim"
 alias tvi="tmux-nvim"
 alias tv="tmux-nvim"
 
+alias t="tmux"
+alias ta="tmux a"
+alias tk="tmux kill-server"
+
 DOT=$HOME/.dotfiles
 
 alias configure-nvim="tmux-nvim $DOT/config/nvim/"
