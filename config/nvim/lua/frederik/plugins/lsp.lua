@@ -25,17 +25,4 @@ return {
 			})
 		end,
 	},
-	{
-		"maan2003/lsp_lines.nvim",
-		opts = {},
-		keys = {
-			{
-				"<leader>dl",
-				function()
-					lsp_lines_enabled = not lsp_lines_enabled
-					vim.diagnostic.config({ virtual_lines = lsp_lines_enabled, virtual_text = not lsp_lines_enabled })
-				end,
-			},
-		},
-	},
 }
