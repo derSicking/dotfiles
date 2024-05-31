@@ -150,7 +150,6 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>e", vim.cmd.Oil },
 		{ "-", vim.cmd.Oil },
 	},
 }

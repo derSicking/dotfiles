@@ -17,7 +17,7 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>E", "<cmd>Neotree show toggle reveal<cr>" },
+		{ "<leader>e", "<cmd>Neotree show toggle reveal<cr>" },
 		{ "<leader>te", "<cmd>Neotree position=current reveal<cr>" },
 		{ "<leader>gt", "<cmd>Neotree show toggle reveal git_status<cr>" },
 	},
