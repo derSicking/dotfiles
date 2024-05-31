@@ -1,5 +1,3 @@
-local lsp_lines_enabled = false
-
 return {
 	{ "folke/neodev.nvim", lazy = false, priority = 103, opts = {} },
 	{ "williamboman/mason.nvim", lazy = false, priority = 102, opts = {} },

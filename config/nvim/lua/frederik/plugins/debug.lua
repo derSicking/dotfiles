@@ -47,7 +47,7 @@ return {
 		end,
 		keys = {
 			{
-				"<leader>D",
+				"<S-F5>",
 				function()
 					require("dapui").toggle()
 				end,

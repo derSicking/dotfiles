@@ -53,6 +53,7 @@ return {
 
 		-- Debug Adapters
 		"java-debug-adapter",
+		"java-test",
 
 		-- Tools
 		"tree-sitter-cli",
@@ -132,7 +133,7 @@ return {
 			})
 		end,
 
-		-- Java: ldtls-nvim
+		-- Java: jdtls-nvim
 		["jdtls"] = function()
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "java",
@@ -145,13 +146,17 @@ return {
 							require("jdtls.dap").setup_dap_main_class_configs()
 						end,
 					})
+					local bundles = {
+						vim.fn.stdpath("data") .. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar",
+					}
+					vim.list_extend(
+						bundles,
+						vim.split(vim.fn.glob(vim.fn.stdpath("data") .. "/mason/share/java-test/*.jar"), "\n")
+					)
 					require("jdtls").start_or_attach({
 						cmd = { "jdtls" },
 						init_options = {
-							bundles = {
-								vim.fn.stdpath("data")
-									.. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar",
-							},
+							bundles = bundles,
 						},
 						settings = {
 							java = {
@@ -162,6 +167,8 @@ return {
 					})
 					on_attach()
 					add_inlay_hint_toggle_bind()
+					vim.api.nvim_buf_create_user_command(0, "JdtGenerateTests", require("jdtls.tests").generate, {})
+					vim.api.nvim_buf_create_user_command(0, "JdtGoToTests", require("jdtls.tests").goto_subjects, {})
 				end,
 			})
 		end,
