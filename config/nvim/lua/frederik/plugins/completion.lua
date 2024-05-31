@@ -14,6 +14,7 @@ return {
 		},
 		config = function()
 			local cmp = require("cmp")
+			local luasnip = require("luasnip")
 
 			cmp.setup({
 				snippet = {
@@ -30,11 +31,71 @@ return {
 					{ name = "buffer", keyword_length = 3 },
 				},
 				mapping = cmp.mapping.preset.insert({
-					["<cr>"] = cmp.mapping.confirm({ select = false }),
-					["<Tab>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
+					["<c-j>"] = cmp.mapping(function()
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif luasnip.locally_jumpable(1) then
+							luasnip.jump(1)
+						else
+							cmp.complete()
+						end
+					end),
+					["<c-k>"] = cmp.mapping(function()
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							cmp.complete()
+						end
+					end),
+					["<cr>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							if luasnip.expandable() then
+								luasnip.expand()
+							else
+								cmp.confirm({ select = false })
+							end
+						else
+							fallback()
+						end
+					end),
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							if luasnip.expandable() then
+								luasnip.expand()
+							else
+								cmp.confirm({ select = true })
+							end
+						else
+							fallback()
+						end
+					end),
+					["<c-l>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							if luasnip.expandable() then
+								luasnip.expand()
+							else
+								cmp.confirm({ select = true })
+							end
+						else
+							fallback()
+						end
+					end),
+					["<c-h>"] = cmp.mapping.abort(),
 				}),
 			})
+
+			local cmp_kind = cmp.lsp.CompletionItemKind
+			cmp.event:on("confirm_done", function(evt)
+				if vim.tbl_contains({ cmp_kind.Function, cmp_kind.Method }, evt.entry:get_completion_item().kind) then
+					vim.api.nvim_feedkeys(
+						"()" .. vim.api.nvim_replace_termcodes("<Left>", true, true, true),
+						"n",
+						false
+					)
+				end
+			end)
 
 			require("luasnip.loaders.from_vscode").lazy_load({
 				paths = { snippetDir },
