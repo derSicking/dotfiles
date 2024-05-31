@@ -31,4 +31,6 @@ require("conform").formatters_by_ft = {
 	html = { "prettierd" },
 	css = { "prettierd" },
 	markdown = { "prettierd_prose_wrap" },
+	java = { "google-java-format" },
+	xml = { "xmlformat" },
 }

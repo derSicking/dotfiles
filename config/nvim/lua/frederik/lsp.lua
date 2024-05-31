@@ -45,6 +45,8 @@ return {
 		-- Formatters
 		"stylua",
 		"prettierd",
+		"google-java-format",
+		"xmlformatter",
 
 		-- Linters
 		"eslint_d",
