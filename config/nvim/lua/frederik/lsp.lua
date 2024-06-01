@@ -161,7 +161,37 @@ return {
 						settings = {
 							java = {
 								inlayHints = { parameterNames = { enabled = "all" } },
-								signatureHelp = { enabled = true },
+								cleanup = {
+									actionsOnSave = {
+										"qualifyMembers",
+										"qualifyStaticMembers",
+										"addOverride",
+										"addFinalModifier",
+										"lambdaExpression",
+										"switchExpression",
+									},
+								},
+								saveActions = {
+									organizeImports = true,
+								},
+								codeGeneration = {
+									generateComments = true,
+								},
+								completion = {
+									enabled = true,
+									guessMethodArguments = true,
+									overwrite = false,
+								},
+								format = {
+									comments = { enabled = true },
+									insertSpaces = true,
+									tabSize = 2,
+								},
+								jdt = { ls = { lombokSupport = true } },
+								signatureHelp = {
+									enabled = true,
+									description = { enabled = true },
+								},
 							},
 						},
 					})
