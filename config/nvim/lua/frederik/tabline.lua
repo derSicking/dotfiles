@@ -1,20 +1,19 @@
-vim.opt.showtabline = 2
-vim.opt.tabline = "%!v:lua.tabline()"
-
 local grapple = require("grapple")
+
+local update_showtabline = function()
+	local tags = grapple.tags()
+	if tags and tags[1] then
+		vim.opt.showtabline = 2
+	else
+		vim.opt.showtabline = 0
+	end
+	vim.cmd.redrawtabline()
+end
 
 vim.api.nvim_create_autocmd("User", {
 	pattern = "GrappleUpdate",
 	group = vim.api.nvim_create_augroup("grapple-update", { clear = true }),
-	callback = function()
-		local tags = grapple.tags()
-		if tags and tags[1] then
-			vim.opt.showtabline = 2
-		else
-			vim.opt.showtabline = 0
-		end
-		vim.cmd.redrawtabline()
-	end,
+	callback = update_showtabline,
 })
 
 local path_to_tab_name = function(path)
@@ -26,6 +25,9 @@ local path_to_tab_name = function(path)
 		else
 			name = path:sub(string.len(cwd) + 7)
 		end
+	end
+	if not name or string.len(name) == 0 and path:sub(1, 11) == "fugitive://" then
+		name = "git"
 	end
 	if not name or string.len(name) == 0 then
 		name = path
@@ -64,3 +66,6 @@ _G.tabline = function()
 
 	return line
 end
+
+vim.opt.tabline = "%!v:lua.tabline()"
+update_showtabline()
