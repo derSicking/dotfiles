@@ -1,5 +1,5 @@
 return {
-	{ "folke/neodev.nvim", lazy = false, priority = 103, opts = {} },
+	{ "folke/lazydev.nvim", lazy = false, priority = 103, opts = {}, ft = "lua" },
 	{ "williamboman/mason.nvim", lazy = false, priority = 102, opts = {} },
 	{
 		"williamboman/mason-lspconfig.nvim",
