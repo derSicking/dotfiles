@@ -56,10 +56,7 @@ return {
 				map("n", "<leader>hb", function()
 					gs.blame_line({ full = true })
 				end)
-				map("n", "<leader>hd", gs.diffthis)
-				map("n", "<leader>hD", function()
-					gs.diffthis("~")
-				end)
+				map("n", "<leader>hB", "<cmd>Git blame<cr>")
 				map("n", "<leader>ht", gs.toggle_deleted)
 
 				-- Text object
