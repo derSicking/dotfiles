@@ -1,4 +1,5 @@
 local grapple = require("grapple")
+local utils = require("frederik.utils")
 
 local update_showtabline = function()
 	local tags = grapple.tags()
@@ -16,25 +17,6 @@ vim.api.nvim_create_autocmd("User", {
 	callback = update_showtabline,
 })
 
-local path_to_tab_name = function(path)
-	local name = vim.fs.basename(path)
-	if not name or string.len(name) == 0 and path:sub(1, 6) == "oil://" then
-		local cwd = vim.loop.cwd()
-		if not cwd then
-			name = path:sub(7)
-		else
-			name = path:sub(string.len(cwd) + 7)
-		end
-	end
-	if not name or string.len(name) == 0 and path:sub(1, 11) == "fugitive://" then
-		name = "git"
-	end
-	if not name or string.len(name) == 0 then
-		name = path
-	end
-	return name
-end
-
 _G.tabline = function()
 	local current_tag = grapple.find({ path = vim.fn.bufname() })
 
@@ -48,7 +30,7 @@ _G.tabline = function()
 		local is_current = current_tag and current_tag.path == tag.path
 		local tag_string = tag.name
 		if not tag_string or string.len(tag_string) == 0 then
-			tag_string = path_to_tab_name(tag.path)
+			tag_string = utils.shorten_buf_name(tag.path)
 		end
 		if is_current then
 			line = line .. "%#TablineSel#  " .. i .. " " .. tag_string .. "  %#Tabline#"
@@ -58,7 +40,7 @@ _G.tabline = function()
 	end
 
 	if not current_tag then
-		local cur_name = path_to_tab_name(vim.fn.bufname())
+		local cur_name = utils.shorten_buf_name(vim.fn.bufname())
 		if cur_name and string.len(cur_name) > 0 then
 			line = line .. "%#Tabline#  %#TablineSel# %#TablineFill# " .. cur_name .. "  %#Tabline#"
 		end
