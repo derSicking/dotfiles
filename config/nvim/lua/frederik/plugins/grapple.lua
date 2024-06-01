@@ -23,11 +23,5 @@ return {
 		{ "<leader>8", "<cmd>Grapple select index=8<cr>" },
 		{ "<leader>9", "<cmd>Grapple select index=9<cr>" },
 		{ "<leader>0", "<cmd>Grapple select index=10<cr>" },
-		{
-			"<leader>G",
-			function()
-				vim.print(require("grapple").tags())
-			end,
-		},
 	},
 }
