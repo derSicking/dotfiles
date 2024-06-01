@@ -78,6 +78,42 @@ return {
 			})
 		end,
 
+		-- Typescript
+		["tsserver"] = function()
+			require("lspconfig")["tsserver"].setup({
+				on_attach = function()
+					on_attach()
+					add_inlay_hint_toggle_bind()
+				end,
+				capabilities = capabilities,
+				settings = {
+					javascript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = false,
+						},
+					},
+
+					typescript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = false,
+						},
+					},
+				},
+			})
+		end,
+
 		-- Latex and Markdown: ltex-client.nvim
 		["ltex"] = function()
 			local ltex_path = vim.env.HOME .. "/.ltex/dictionaries"
