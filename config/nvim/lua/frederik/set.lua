@@ -1,4 +1,19 @@
 vim.opt.relativenumber = true
+vim.opt.number = true
+
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" }, {
+	group = vim.api.nvim_create_augroup("relativenumber-on", { clear = true }),
+	callback = function()
+		vim.opt.relativenumber = true
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" }, {
+	group = vim.api.nvim_create_augroup("relativenumber-off", { clear = true }),
+	callback = function()
+		vim.opt.relativenumber = false
+	end,
+})
 
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
