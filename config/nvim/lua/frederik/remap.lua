@@ -33,6 +33,9 @@ vim.keymap.set("n", "x", '"_x')
 
 vim.keymap.set("x", "p", '"_dP')
 
+vim.keymap.set("n", "<leader>m", "q")
+vim.keymap.set("", "q", "")
+
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<cr>")
 
 vim.keymap.set("n", "<C-;>", "<esc>mm<cmd>s/\\([^;:,]\\)$/\\1;/<cr>`m")
@@ -53,6 +56,7 @@ vim.keymap.set("n", "<c-s-k>", "<c-w>+")
 vim.keymap.set("n", "<c-s-l>", "<c-w>2>")
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
+vim.keymap.set("n", "<leader>q", ":q")
 vim.keymap.set("n", "<leader>Q", ":q<cr>")
 
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
