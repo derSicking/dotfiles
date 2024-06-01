@@ -32,6 +32,9 @@ vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 10
@@ -41,6 +44,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "81"
+vim.opt.cursorline = true
 
 vim.opt.clipboard = "unnamedplus"
 
