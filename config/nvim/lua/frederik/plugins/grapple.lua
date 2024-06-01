@@ -7,6 +7,7 @@ return {
 		scope = "git",
 		icons = true,
 		status = true,
+		event = true,
 	},
 	cmd = "Grapple",
 	keys = {
