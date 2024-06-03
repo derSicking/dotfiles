@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Windows 10
+Comment=Start a Windows 10 Virtual Machine (Virtual Box)
+Exec=VBoxManage startvm "Windows 10"
