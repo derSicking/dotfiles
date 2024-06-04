@@ -1,6 +1,6 @@
 alias __eza_long="eza --long --git --no-quotes --icons=always -X"
 alias __eza_long_all="__eza_long -a"
-alias __eza_long_concise="__eza_long --no-filesize --no-user --no-permissions --git-ignore"
+alias __eza_long_concise="__eza_long --no-filesize --no-user --no-permissions"
 alias __eza_long_tree="__eza_long_concise --tree"
 alias __eza_long_tree_all="__eza_long_concise --tree -a"
 
