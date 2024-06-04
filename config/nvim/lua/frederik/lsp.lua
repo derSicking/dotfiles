@@ -28,6 +28,42 @@ local add_inlay_hint_toggle_bind = function()
 	end, { buffer = 0 })
 end
 
+-- Set up angularls without mason to have control over the version via package.json
+local lsputil = require("lspconfig.util")
+
+local get_probe_dir = function(root_dir)
+	local project_root = lsputil.find_node_modules_ancestor(root_dir)
+	return project_root and (project_root .. "/node_modules") or ""
+end
+
+local default_probe_dir = get_probe_dir(vim.fn.getcwd())
+
+require("lspconfig")["angularls"].setup({
+	cmd = {
+		"npx",
+		"ngserver",
+		"--stdio",
+		"--tsProbeLocations",
+		default_probe_dir,
+		"--ngProbeLocations",
+		default_probe_dir,
+	},
+	on_new_config = function(new_config, new_root_dir)
+		local new_probe_dir = get_probe_dir(new_root_dir)
+		new_config.cmd = {
+			"npx",
+			"ngserver",
+			"--stdio",
+			"--tsProbeLocations",
+			new_probe_dir,
+			"--ngProbeLocations",
+			new_probe_dir,
+		}
+	end,
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
 return {
 	-- Tools to be installed with Mason
 	ensure_installed = {
@@ -36,7 +72,6 @@ return {
 		"jdtls",
 		"eslint-lsp",
 		"typescript-language-server",
-		"angular-language-server",
 		"emmet-language-server",
 		"html-lsp",
 		"css-lsp",
