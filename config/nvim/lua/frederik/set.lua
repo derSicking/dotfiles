@@ -1,6 +1,13 @@
 vim.opt.relativenumber = true
 vim.opt.number = true
 
+vim.api.nvim_create_autocmd("BufEnter", {
+	group = vim.api.nvim_create_augroup("set-formatoptions", { clear = true }),
+	callback = function()
+		vim.opt.formatoptions = "jql"
+	end,
+})
+
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" }, {
 	group = vim.api.nvim_create_augroup("relativenumber-on", { clear = true }),
 	callback = function()
