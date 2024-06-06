@@ -78,6 +78,7 @@ Enable `NetworkManager.service`
 - jq
 - zathura
 - zathura-pdf-mupdf
+- texlive-binextra
 
 Enable `docker.socket` and add user to `docker` group
 

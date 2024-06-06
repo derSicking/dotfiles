@@ -209,6 +209,14 @@ return {
 								},
 								forwardSearchAfter = true,
 							},
+							latexindent = {
+								modifyLineBreaks = true,
+								["local"] = os.getenv("HOME") .. "/.indentconfig.yaml",
+							},
+							chktex = {
+								onOpenAndSave = true,
+								onEdit = true,
+							},
 						},
 					},
 				})
