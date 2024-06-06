@@ -76,6 +76,8 @@ Enable `NetworkManager.service`
 - acpi
 - interception-caps2esc
 - jq
+- zathura
+- zathura-pdf-mupdf
 
 Enable `docker.socket` and add user to `docker` group
 
