@@ -28,6 +28,31 @@ local add_inlay_hint_toggle_bind = function()
 	end, { buffer = 0 })
 end
 
+local get_devcontainer_workspace_folder = function(project_dir, callback)
+	vim.fn.jobstart({ "devcontainer", "read-configuration", "--workspace-folder", project_dir }, {
+		on_stdout = function(_, data, _)
+			for _, str in ipairs(data) do
+				if str and string.len(str) > 0 then
+					local jq_job = vim.fn.jobstart({ "jq", "-r", ".workspace.workspaceFolder" }, {
+						on_stdout = function(_, jq_out, _)
+							for _, workspace in ipairs(jq_out) do
+								if workspace and string.len(workspace) > 0 then
+									callback(project_dir, workspace)
+								end
+							end
+						end,
+						on_exit = function(_, _, _) end,
+					})
+					vim.fn.chansend(jq_job, str)
+					vim.fn.chanclose(jq_job, "stdin")
+				end
+			end
+		end,
+		on_exit = function(_, _, _) end,
+	})
+	return "/workspaces/open-web-vault/"
+end
+
 -- Set up angularls without mason to have control over the version via package.json
 local lsputil = require("lspconfig.util")
 
@@ -76,12 +101,14 @@ return {
 		"html-lsp",
 		"css-lsp",
 		"ltex-ls",
+		"texlab",
 
 		-- Formatters
 		"stylua",
 		"prettierd",
 		"google-java-format",
 		"xmlformatter",
+		"latexindent",
 
 		-- Linters
 		"eslint_d",
@@ -147,6 +174,45 @@ return {
 					},
 				},
 			})
+		end,
+
+		-- LaTeX
+		["texlab"] = function()
+			get_devcontainer_workspace_folder(vim.fn.getcwd(), function(project_dir, workspace_folder)
+				require("lspconfig")["texlab"].setup({
+					on_attach = on_attach,
+					capabilities = capabilities,
+					settings = {
+						texlab = {
+							forwardSearch = {
+								executable = "zathura",
+								args = {
+									"--synctex-forward",
+									"%l:1:%f",
+									"%p",
+								},
+							},
+							build = {
+								executable = "devcontainer",
+								args = {
+									"exec",
+									"--workspace-folder",
+									project_dir,
+									"--remote-env",
+									"base_len=" .. (string.len(project_dir) + 1),
+									"bash",
+									"-c",
+									workspace_folder
+										.. '/texbuild $(echo "'
+										.. workspace_folder
+										.. '")$(echo "%f" | cut -c $base_len- -)',
+								},
+								forwardSearchAfter = true,
+							},
+						},
+					},
+				})
+			end)
 		end,
 
 		-- Latex and Markdown: ltex-client.nvim
