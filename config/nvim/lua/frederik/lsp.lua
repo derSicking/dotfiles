@@ -295,7 +295,8 @@ return {
 						buffer = 0,
 						group = vim.api.nvim_create_augroup("jdtls_dap_start", { clear = true }),
 						callback = function()
-							require("jdtls.dap").setup_dap_main_class_configs()
+							-- TODO: chcek why this is not needed
+							-- require("jdtls.dap").setup_dap_main_class_configs()
 						end,
 					})
 					local bundles = {
