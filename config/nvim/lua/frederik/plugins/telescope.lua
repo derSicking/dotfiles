@@ -14,11 +14,13 @@ return {
 				},
 			},
 			defaults = {
+				path_display = { "filename_first" },
 				mappings = {
 					i = {
 						["<esc>"] = actions.close,
 						["<c-j>"] = actions.move_selection_next,
 						["<c-k>"] = actions.move_selection_previous,
+						["<c-l>"] = actions.select_default,
 					},
 				},
 			},
@@ -29,9 +31,8 @@ return {
 		vim.keymap.set("n", "<C-p>", function()
 			local _, ret, _ = utils.get_os_command_output({ "git", "rev-parse", "--is-inside-work-tree" })
 			if ret == 0 then
-				builtin.git_files({
-					use_git_root = false,
-					show_untracked = true,
+				builtin.find_files({
+					follow = true,
 				})
 			else
 				builtin.find_files({
@@ -51,10 +52,13 @@ return {
 		end, {})
 
 		vim.keymap.set("n", "<leader>ps", builtin.live_grep, {})
+
+		vim.keymap.set("n", "<C-F1>", builtin.help_tags, {})
 	end,
 	keys = {
 		{ "<c-p>" },
 		{ "<leader><c-p>" },
 		{ "<leader>ps" },
+		{ "<c-m>" },
 	},
 }

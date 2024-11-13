@@ -16,8 +16,8 @@ local on_attach = function()
 	vim.keymap.set({ "n", "v" }, "<leader>f", vim.lsp.buf.code_action, { buffer = 0 })
 	vim.keymap.set("n", "<leader>rn", rename_symbol, { buffer = 0 })
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
-	vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
+	vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { buffer = 0 })
+	vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", { buffer = 0 })
 	vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { buffer = 0 })
 	vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { buffer = 0 })
 end
@@ -102,6 +102,8 @@ return {
 		"css-lsp",
 		"ltex-ls",
 		"texlab",
+		"gopls",
+		"clangd",
 
 		-- Formatters
 		"stylua",
@@ -109,6 +111,7 @@ return {
 		"google-java-format",
 		"xmlformatter",
 		"latexindent",
+		"clang-format",
 
 		-- Linters
 		"eslint_d",
@@ -116,6 +119,7 @@ return {
 		-- Debug Adapters
 		"java-debug-adapter",
 		"java-test",
+		"delve",
 
 		-- Tools
 		"tree-sitter-cli",
@@ -141,14 +145,17 @@ return {
 		end,
 
 		-- Typescript
-		["tsserver"] = function()
-			require("lspconfig")["tsserver"].setup({
+		["ts_ls"] = function()
+			require("lspconfig")["ts_ls"].setup({
 				on_attach = function()
 					on_attach()
 					add_inlay_hint_toggle_bind()
 				end,
 				capabilities = capabilities,
 				settings = {
+					completions = {
+						completeFunctionCalls = true,
+					},
 					javascript = {
 						inlayHints = {
 							includeInlayEnumMemberValueHints = true,

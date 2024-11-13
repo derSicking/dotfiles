@@ -25,4 +25,15 @@ return {
 			})
 		end,
 	},
+	{
+		"ray-x/lsp_signature.nvim",
+		event = "VeryLazy",
+		opts = {
+			bind = true,
+			hint_prefix = "",
+			handler_opts = {
+				border = "none",
+			},
+		},
+	},
 }

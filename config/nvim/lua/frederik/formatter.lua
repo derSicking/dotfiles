@@ -26,11 +26,13 @@ require("conform").formatters.prettierd_prose_wrap = {
 
 require("conform").formatters_by_ft = {
 	lua = { "stylua" },
-	javascript = { "prettierd", "eslint_d" },
-	typescript = { "prettierd", "eslint_d" },
-	html = { "prettierd" },
+	javascript = { "prettierd", "eslint_d", lsp_format = "fallback" },
+	json = { "prettierd" },
+	typescript = { "prettierd", "eslint_d", lsp_format = "fallback" },
+	html = { "prettierd", lsp_format = "last" },
 	css = { "prettierd" },
 	markdown = { "prettierd_prose_wrap" },
 	java = { "google-java-format" },
 	xml = { "xmlformat" },
+	c = { "clang-format", lsp_format = "first" },
 }

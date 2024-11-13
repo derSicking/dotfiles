@@ -58,4 +58,8 @@ return {
 		"theHamsta/nvim-dap-virtual-text",
 		opts = {},
 	},
+	{
+		"leoluz/nvim-dap-go",
+		opts = {},
+	},
 }

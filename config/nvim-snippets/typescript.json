@@ -1,4 +1,8 @@
 {
+  "ctor": {
+    "body": "public constructor($1) {$2}",
+    "prefix": "ctor"
+  },
   "log": {
     "body": "console.log($1)",
     "prefix": "log"

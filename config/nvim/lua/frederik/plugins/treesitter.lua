@@ -6,6 +6,9 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				matchup = {
+					enable = true,
+				},
 				modules = {},
 				ensure_installed = {},
 				ignore_install = {},
@@ -45,7 +48,6 @@ return {
 						keymaps = {
 							["ia"] = { query = "@parameter.inner" },
 							["aa"] = { query = "@parameter.outer" },
-							["f"] = { query = "@function.inner" },
 							["if"] = { query = "@function.inner" },
 							["af"] = { query = "@function.outer" },
 						},

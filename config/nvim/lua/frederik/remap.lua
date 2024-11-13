@@ -61,6 +61,9 @@ vim.keymap.set("n", "<leader>Q", ":q<cr>")
 
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
 
-vim.keymap.set("", "<RightMouse>", "<nop>")
-vim.keymap.set("", "", "<nop>")
-vim.keymap.set("", "<F1>", "<nop>")
+local all_modes = { "n", "v", "i", "c", "o", "t", "l" }
+
+vim.keymap.set(all_modes, "<RightMouse>", "<nop>")
+vim.keymap.set(all_modes, "", "<nop>")
+vim.keymap.set(all_modes, "<F1>", "<nop>")
+vim.keymap.set("n", "<space>", "<nop>")

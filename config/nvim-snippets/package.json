@@ -18,6 +18,12 @@
           "java"
         ],
         "path": "./java.json"
+      },
+      {
+        "language": [
+          "go"
+        ],
+        "path": "./go.json"
       }
     ]
   },
