@@ -204,5 +204,7 @@ exec --no-startup-id picom
 exec --no-startup-id redshift -l 51:7
 exec --no-startup-id iwgtk -i
 
+exec --no-startup-id x11vnc -snapfb -usepw -display :0 -forever -loop -no6
+
 bindsym $mod+g exec google-chrome-stable
 
