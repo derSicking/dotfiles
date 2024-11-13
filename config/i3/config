@@ -200,7 +200,7 @@ bar {
 font pango:MesloLGS NF 10
 
 exec --no-startup-id snixembed
-exec --no-startup-id picom
+exec --no-startup-id picom --backend glx
 exec --no-startup-id redshift -l 51:7
 exec --no-startup-id iwgtk -i
 
