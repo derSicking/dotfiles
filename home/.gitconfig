@@ -6,3 +6,5 @@
 [core]
 	editor = vim
   quotepath = false
+[pull]
+	rebase = false

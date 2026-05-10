@@ -1,0 +1,8 @@
+require("mappings")
+require("options")
+require("autocommands")
+require("plugins")
+require("lsp")
+require("formatting")
+require("custom.tabline")
+require("custom.mappings")

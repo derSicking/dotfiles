@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+CONFIG_DIR="$HOME/.config/opencode"
+
+# OpenCode manages runtime data (plugins, agents, themes) in this directory,
+# so we symlink individual config files rather than the whole subdirectory.
+mkdir -p "$CONFIG_DIR"
+
+for f in "$SCRIPT_DIR"/*; do
+  base=$(basename "$f")
+  [ "$base" = "dotfile_setup" ] && continue
+  ln -sf "$f" "$CONFIG_DIR/$base"
+done

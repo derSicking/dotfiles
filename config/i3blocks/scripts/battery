@@ -42,7 +42,7 @@ require("child_process").exec("acpi -abi", (_error, stdout, _stderr) => {
       return {
         key,
         capacity: Number(
-          line.match(/.*?last full capacity ([0-9]*) mAh.*?/)?.[1],
+          line?.match(/.*?last full capacity ([0-9]*) mAh.*?/)?.[1] ?? 0,
         ),
       };
     })

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Screen Above
+Comment=Extend the display to a second screen above the main display.
+Exec=screen-above

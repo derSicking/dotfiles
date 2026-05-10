@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Screen Single
+Comment=Only use the main display.
+Exec=screen-single

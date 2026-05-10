@@ -33,3 +33,5 @@ alias :q="exit"
 
 alias clr="clear"
 alias claer="clear"
+
+alias espdev=". $HOME/esp/esp-idf/export.sh"

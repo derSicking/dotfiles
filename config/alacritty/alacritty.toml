@@ -13,46 +13,79 @@ style = "Italic"
 family = "Meslo LGS NF"
 style = "Bold"
 
+# -----------------------------------------------------------------------------
 # TokyoNight Alacritty Colors
+# Theme: Tokyo Night Day
+# Upstream: https://github.com/folke/tokyonight.nvim/raw/main/extras/alacritty/tokyonight_day.toml
+# -----------------------------------------------------------------------------
+
 # Default colors
 [colors.primary]
-background = '#1a1b26'
-foreground = '#c0caf5'
-
-#[colors.cursor]
-#cursor = '#c0caf5'
-#text = '#1a1b26'
+background = '#e1e2e7'
+foreground = '#3760bf'
 
 # Normal colors
 [colors.normal]
-black = '#15161e'
-red = '#f7768e'
-green = '#9ece6a'
-yellow = '#e0af68'
-blue = '#7aa2f7'
-magenta = '#bb9af7'
-cyan = '#7dcfff'
-white = '#a9b1d6'
+black = '#b4b5b9'
+red = '#f52a65'
+green = '#587539'
+yellow = '#8c6c3e'
+blue = '#2e7de9'
+magenta = '#9854f1'
+cyan = '#007197'
+white = '#6172b0'
 
 # Bright colors
 [colors.bright]
-black = '#414868'
-red = '#f7768e'
-green = '#9ece6a'
-yellow = '#e0af68'
-blue = '#7aa2f7'
-magenta = '#bb9af7'
-cyan = '#7dcfff'
-white = '#c0caf5'
+black = '#a1a6c5'
+red = '#ff4774'
+green = '#5c8524'
+yellow = '#a27629'
+blue = '#358aff'
+magenta = '#a463ff'
+cyan = '#007ea8'
+white = '#3760bf'
 
-# Indexed Colors
-[[colors.indexed_colors]]
-index = 16
-color = '#ff9e64'
-
-[[colors.indexed_colors]]
-index = 17
-color = '#db4b4b'
+# # TokyoNight Alacritty Colors
+# # Default colors
+# [colors.primary]
+# background = '#1a1b26'
+# foreground = '#c0caf5'
+#
+# #[colors.cursor]
+# #cursor = '#c0caf5'
+# #text = '#1a1b26'
+#
+# # Normal colors
+# [colors.normal]
+# black = '#15161e'
+# red = '#f7768e'
+# green = '#9ece6a'
+# yellow = '#e0af68'
+# blue = '#7aa2f7'
+# magenta = '#bb9af7'
+# cyan = '#7dcfff'
+# white = '#a9b1d6'
+#
+# # Bright colors
+# [colors.bright]
+# black = '#414868'
+# red = '#f7768e'
+# green = '#9ece6a'
+# yellow = '#e0af68'
+# blue = '#7aa2f7'
+# magenta = '#bb9af7'
+# cyan = '#7dcfff'
+# white = '#c0caf5'
+#
+# # Indexed Colors
+# [[colors.indexed_colors]]
+# index = 16
+# color = '#ff9e64'
+#
+# [[colors.indexed_colors]]
+# index = 17
+# color = '#db4b4b'
 
 [window]
 padding.x = 10

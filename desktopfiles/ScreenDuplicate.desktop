@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Screen Duplicate
+Comment=Duplicate the main display onto a second screen
+Exec=screen-duplicate
