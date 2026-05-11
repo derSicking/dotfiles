@@ -1,5 +1,5 @@
 -- If needed, enable to quickly regenerate uuids with R
--- local util = require("config.custom.utils")
+-- local util = require("custom.utils")
 --
 -- vim.keymap.set("n", "R", function()
 -- 	vim.cmd("normal! ciw" .. util.uuid_no_dash())

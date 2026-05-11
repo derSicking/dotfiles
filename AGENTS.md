@@ -29,10 +29,15 @@ Packages listed in `stuff-to-install.md` must be installed **before** running `i
 - `config/nvim/plugin` — managed by Neovim plugin manager
 - `config/tmux/plugins` — managed by TPM
 
+## Config linking quirks
+
+- `config/dotfile_link` skips subdirectories already present in `~/.config/` (so apps that manage their own runtime data, like opencode, are never overwritten).
+- `config/opencode/dotfile_setup` symlinks individual files (not the whole subdirectory) because OpenCode manages its own plugins/agents/themes there.
+
 ## Special files at repo root
 
-- `caps2esc.yaml` — `interception-tools` config, linked to `/etc/interception/udevmon.d/`
-- `usde` — custom XKB symbols file (US layout + German umlauts), linked to `/usr/share/X11/xkb/symbols/`
+- `caps2esc.yaml` — `interception-tools` config; linked to `/etc/interception/udevmon.d/` (needs root).
+- `usde` — custom XKB symbols file (US layout + German umlauts); linked to `/usr/share/X11/xkb/symbols/` (needs root).
 
 ## Commit style
 

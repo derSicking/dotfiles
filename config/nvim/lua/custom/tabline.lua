@@ -1,5 +1,5 @@
 local grapple = require("grapple")
-local utils = require("config.custom.utils")
+local utils = require("custom.utils")
 
 local update_showtabline = function()
 	local tags = grapple.tags()

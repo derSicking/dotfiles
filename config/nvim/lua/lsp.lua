@@ -1,4 +1,4 @@
-local utils = require("config.custom.utils")
+local utils = require("custom.utils")
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
