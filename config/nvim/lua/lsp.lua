@@ -2,8 +2,6 @@ local utils = require("custom.utils")
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-local ltex_lang = "en-US"
-
 local rename_symbol = function()
 	local old_name = vim.fn.expand("<cword>")
 	local new_name = vim.fn.input("Rename " .. old_name .. ": ")
@@ -93,6 +91,21 @@ vim.lsp.config("clangd", {
 		add_inlay_hint_toggle_bind()
 	end,
 	capabilities = capabilities,
+})
+
+vim.lsp.config("rust_analyzer", {
+	on_attach = function()
+		on_attach()
+		add_inlay_hint_toggle_bind()
+	end,
+	capabilities = capabilities,
+	settings = {
+		["rust-analyzer"] = {
+			check = {
+				command = "clippy",
+			},
+		},
+	},
 })
 
 vim.lsp.config("helm_ls", {

@@ -37,4 +37,5 @@ require("conform").formatters_by_ft = {
 	go = { lsp_format = "first" },
 	c = { lsp_format = "first" },
 	cpp = { lsp_format = "first" },
+	rust = { lsp_format = "first" },
 }
