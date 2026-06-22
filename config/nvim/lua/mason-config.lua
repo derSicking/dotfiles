@@ -8,7 +8,6 @@ return {
 		"emmet-language-server",
 		"html-lsp",
 		"css-lsp",
-		"ltex-ls",
 		"gopls",
 		"yamlls",
 		"helm_ls",
