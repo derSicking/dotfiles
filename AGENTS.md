@@ -11,6 +11,8 @@ Finds and executes **all** scripts named either `dotfile_setup` or `dotfile_link
 - **`dotfile_setup`** — one-time setup (e.g. cloning nvm, tpm). Runs first.
 - **`dotfile_link`** — creates symlinks from the repo subtree to the corresponding `$HOME` location. The script removes itself from the target after linking.
 
+> **Never run `dotfile_link` or `dotfile_setup` scripts directly.** They assume `PWD` is the repo root (the `install` script sources the repo root path before calling them). Always invoke them via `./install` from the repo root.
+
 Symlink targets by directory:
 
 | Repo dir | Links to |
