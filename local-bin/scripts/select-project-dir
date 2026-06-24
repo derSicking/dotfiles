@@ -11,13 +11,20 @@ __echo_lines() {
 }
 
 __all_sessions() {
-  # Find all directories inside parent dirs listed in find-dirs.conf
-  find -L $(__echo_lines "$HOME/.config/tmux/find-dirs.conf") \
-    -mindepth 1 -maxdepth 1 -type d \
-    | grep --color=never ".*/[^.][^/]*$";
+  # For each dir found in find-dirs.conf, check if it's a git repo.
+  # If it is, output it. If not, search up to 3 levels deep for repos.
+  while IFS= read -r dir; do
+    if [[ -e "$dir/.git" ]]; then
+      echo "$dir"
+    else
+      # Search 3 levels deep for any nested .git dirs and output their parents
+      find -L "$dir" -maxdepth 3 -name ".git" -printf "%h\n" 2>/dev/null
+    fi
+  done < <(find -L $(__echo_lines "$HOME/.config/tmux/find-dirs.conf") \
+    -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
+    | grep --color=never ".*/[^.][^/]*$" || true)
 
-  # Output all session directories listed in session-dirs.conf
-  __echo_lines "$HOME/.config/tmux/session-dirs.conf";
+  __echo_lines "$HOME/.config/tmux/session-dirs.conf"
 }
 
 if [[ $# -eq 1 ]]; then
