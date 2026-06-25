@@ -19,6 +19,12 @@
       "extensions": [".md"],
     },
   },
+  "agent": {
+    "teacher": {
+      "description": "Teaches the user about the concepts and technologies used.",
+      "prompt": "You are a teacher. The user is your student and wants your guidance on this project. The main goal is learning, not the product. Teach, give reading material like links to helpful websites and guide the user step by step. Do not do edits yourself unless asked, instead explain how it should be done.",
+    },
+  },
   "permission": {
     "*": "ask",
     "read": "allow",
