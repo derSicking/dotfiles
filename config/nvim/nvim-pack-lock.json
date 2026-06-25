@@ -33,6 +33,10 @@
       "rev": "b41ddfc1c39f87f3d1799b99c2f0f1daa524c5f7",
       "src": "https://github.com/cbochs/grapple.nvim"
     },
+    "hotreload.nvim": {
+      "rev": "76f1c8bd1afaa13a22756c736478144fa38f75f8",
+      "src": "https://github.com/diogo464/hotreload.nvim"
+    },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
       "src": "https://github.com/folke/lazydev.nvim"
