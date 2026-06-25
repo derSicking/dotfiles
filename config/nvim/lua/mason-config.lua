@@ -14,6 +14,7 @@ return {
 		"kotlin_lsp",
 		"clangd",
 		"rust-analyzer",
+		"wgsl-analyzer",
 
 		-- Formatters
 		"stylua",
