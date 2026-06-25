@@ -28,6 +28,7 @@ require("conform").formatters_by_ft = {
 	lua = { "stylua" },
 	javascript = { "prettierd", "eslint_d", lsp_format = "never" },
 	json = { "prettierd" },
+	jsonc = { "prettierd" },
 	typescript = { "prettierd", "eslint_d", lsp_format = "never" },
 	html = { "prettierd", lsp_format = "first" },
 	htmlangular = { "prettierd", lsp_format = "first" },

@@ -1,5 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "formatter": {
+    "prettier": {
+      "command": ["prettier", "--write", "$FILE"],
+      "extensions": [
+        ".js",
+        ".ts",
+        ".html",
+        ".css",
+        ".scss",
+        ".json",
+        ".jsonc",
+        ".yaml",
+      ],
+    },
+    "custom-markdown-formatter": {
+      "command": ["prettier", "--prose-wrap=always", "--write", "$FILE"],
+      "extensions": [".md"],
+    },
+  },
   "permission": {
     "*": "ask",
     "read": "allow",
@@ -77,7 +96,7 @@
       "git stash list *": "allow",
       "git status": "allow",
       "git status *": "allow",
-    }
+    },
   },
-  "autoupdate": "notify"
+  "autoupdate": "notify",
 }
