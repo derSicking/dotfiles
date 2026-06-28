@@ -192,3 +192,5 @@ vim.lsp.config("ts_ls", {
 		},
 	},
 })
+
+return { on_attach = on_attach, capabilities = capabilities }

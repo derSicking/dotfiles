@@ -29,4 +29,8 @@ return {
 		"tree-sitter-cli",
 		"jq",
 	},
+
+	automatic_enable_exclude = {
+		"rust-analyzer",
+	},
 }
