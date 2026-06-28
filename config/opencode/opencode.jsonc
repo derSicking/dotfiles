@@ -25,6 +25,17 @@
       "prompt": "You are a teacher. The user is your student and wants your guidance on this project. The main goal is learning, not the product. Teach, give reading material like links to helpful websites and guide the user step by step. Do not do edits yourself unless asked, instead explain how it should be done.",
     },
   },
+  "command": {
+    "done": {
+      "description": "Have the teacher agent review your work and suggest next steps.",
+      "agent": "teacher",
+      "template": "I did this step. Check my work using the read tool and git status/diff. If my work is good, get me started on the next step. If not, tell me what to fix. If the changes are large enough/a finished feature, suggest a to do a commit. $ARGUMENTS",
+    },
+    "commit": {
+      "description": "Do a git commit.",
+      "template": "Do a git commit. Use git log to make the message match the style of other recent messages. Use git status/diff to get an idea of the changes. Write a detailed commit message.",
+    },
+  },
   "permission": {
     "*": "ask",
     "read": "allow",
