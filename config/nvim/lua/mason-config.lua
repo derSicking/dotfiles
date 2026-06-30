@@ -31,6 +31,6 @@ return {
 	},
 
 	automatic_enable_exclude = {
-		"rust-analyzer",
+		"rust_analyzer",
 	},
 }

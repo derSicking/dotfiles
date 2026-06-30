@@ -74,10 +74,10 @@ vim.lsp.config("angularls", {
 	},
 })
 
-vim.lsp.config("*", {
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
+-- vim.lsp.config("*", {
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- })
 
 vim.lsp.config("clangd", {
 	cmd = {
@@ -93,20 +93,20 @@ vim.lsp.config("clangd", {
 	capabilities = capabilities,
 })
 
-vim.lsp.config("rust_analyzer", {
-	on_attach = function()
-		on_attach()
-		add_inlay_hint_toggle_bind()
-	end,
-	capabilities = capabilities,
-	settings = {
-		["rust-analyzer"] = {
-			check = {
-				command = "clippy",
-			},
-		},
-	},
-})
+-- vim.lsp.config("rust_analyzer", {
+-- 	on_attach = function()
+-- 		on_attach()
+-- 		add_inlay_hint_toggle_bind()
+-- 	end,
+-- 	capabilities = capabilities,
+-- 	settings = {
+-- 		["rust-analyzer"] = {
+-- 			check = {
+-- 				command = "clippy",
+-- 			},
+-- 		},
+-- 	},
+-- })
 
 vim.lsp.config("helm_ls", {
 	on_attach = on_attach,
@@ -193,4 +193,4 @@ vim.lsp.config("ts_ls", {
 	},
 })
 
-return { on_attach = on_attach, capabilities = capabilities }
+return { on_attach = on_attach, add_inlay_hint_toggle_bind = add_inlay_hint_toggle_bind, capabilities = capabilities }

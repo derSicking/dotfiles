@@ -1,25 +1,22 @@
 vim.pack.add({ {
-  src = "https://github.com/mrcjkb/rustaceanvim",
+	src = "https://github.com/mrcjkb/rustaceanvim",
 } })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "rust",
-  callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
+local lsp = require("lsp")
 
-    vim.keymap.set("n", "<leader>f", function()
-      vim.cmd.RustLsp("codeAction")
-    end, { buffer = bufnr })
+vim.g.rustaceanvim = {
+	server = {
+		on_attach = function()
+			lsp.on_attach()
+			lsp.add_inlay_hint_toggle_bind()
+			vim.keymap.set("n", "<leader>f", function()
+				vim.cmd.RustLsp("codeAction")
+			end, { buffer = 0 })
 
-    vim.keymap.set("n", "K", function()
-      vim.cmd.RustLsp({ "hover", "actions" })
-    end, { buffer = bufnr })
-
-    vim.keymap.set("n", "<leader>dj", function()
-      vim.cmd.RustLsp({ "renderDiagnostic", "cycle" })
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "<leader>dk", function()
-      vim.cmd.RustLsp({ "renderDiagnostic", "cycle_prev" })
-    end, { buffer = bufnr })
-  end,
-})
+			vim.keymap.set("n", "K", function()
+				vim.cmd.RustLsp({ "hover", "actions" })
+			end, { buffer = 0 })
+		end,
+		capabilities = lsp.capabilities,
+	},
+}
