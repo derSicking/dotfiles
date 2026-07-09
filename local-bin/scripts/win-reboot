@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo efibootmgr -n $(sudo efibootmgr | grep 276a40b6 | sed -n 's/^Boot\([0-9A-Fa-f]\{4\}\).*/\1/p') && reboot

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Windows Reboot
+Exec=win-reboot
+Icon=windows
+StartupNotify=false

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Pick a random wallpaper from ~/.wallpapers
+wallpaper=$(find "$HOME/.wallpapers" -maxdepth 1 -type f | shuf -n1)
+
+# Kill any existing swaybg instance
+pkill swaybg 2>/dev/null
+
+# Start swaybg with the random wallpaper
+swaybg -i "$wallpaper" -m fill & disown

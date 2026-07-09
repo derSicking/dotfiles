@@ -1,4 +1,5 @@
 [Desktop Entry]
+Type=Application
 Name=Suspend
 Comment=Suspend the machine
-Exec=sus
+Exec=systemctl suspend

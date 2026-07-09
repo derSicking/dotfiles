@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Editor
+Exec=ghostty -e nvim %F
+Keywords=Text;editor;
+Icon=nvim
+Categories=Utility;TextEditor;
+StartupNotify=false

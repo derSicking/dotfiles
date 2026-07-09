@@ -1,0 +1,10 @@
+theme = Catppuccin Latte
+
+confirm-close-surface = false
+window-decoration = none
+resize-overlay = never
+bell-features = no-title,no-attention,audio
+
+window-padding-x = 8
+window-padding-y = 8
+window-padding-balance = true
