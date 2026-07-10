@@ -1,0 +1,37 @@
+#!/bin/sh
+# darkman hook: switch GTK3 + GTK4/libadwaita theme
+# - settings.ini  : read by GTK3 apps at startup (fallback)
+# - gsettings     : LIVE channel — running GTK3 apps (Thunar, etc.) reload now
+# - gtk-4.0 symlink: libadwaita/GTK4
+ACCENT=blue
+case "$1" in
+  dark)  FLAVOR=macchiato; PREFER=1; GSETTINGS_CS="prefer-dark" ;;
+  light) FLAVOR=latte; PREFER=0; GSETTINGS_CS="prefer-light" ;;
+  *) echo "unknown mode: $1" >&2; exit 1 ;;
+esac
+THEME_DIR="$HOME/.local/share/themes/catppuccin-$FLAVOR-$ACCENT-standard+default"
+GTK_NAME="catppuccin-$FLAVOR-$ACCENT-standard+default"
+
+# 1) settings.ini (startup fallback)
+python3 - "$GTK_NAME" "$PREFER" <<'PY'
+import configparser, os, sys
+name, prefer = sys.argv[1], sys.argv[2]
+for p in (os.path.expanduser("~/.config/gtk-3.0/settings.ini"),
+          os.path.expanduser("~/.config/gtk-4.0/settings.ini")):
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    cp = configparser.ConfigParser(); cp.read(p)
+    if not cp.has_section("Settings"): cp.add_section("Settings")
+    cp.set("Settings", "gtk-theme-name", name)
+    cp.set("Settings", "gtk-application-prefer-dark-theme", prefer)
+    cp.write(open(p, "w"))
+PY
+
+# 2) GSettings — LIVE update for running GTK3 apps
+gsettings set org.gnome.desktop.interface gtk-theme "$GTK_NAME"
+gsettings set org.gnome.desktop.interface color-scheme "$GSETTINGS_CS"
+
+# 3) libadwaita/GTK4 symlinks
+G4="$HOME/.config/gtk-4.0"; mkdir -p "$G4"
+ln -sf "$THEME_DIR/gtk-4.0/assets"       "$G4/assets"
+ln -sf "$THEME_DIR/gtk-4.0/gtk.css"      "$G4/gtk.css"
+ln -sf "$THEME_DIR/gtk-4.0/gtk-dark.css" "$G4/gtk-dark.css"

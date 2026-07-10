@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 
-# Pick a random wallpaper from ~/.wallpapers
-wallpaper=$(find "$HOME/.wallpapers" -maxdepth 1 -type f | shuf -n1)
+# Determine mode: prefer $1, fall back to darkman get, default to light
+if [ "$1" = "dark" ] || [ "$1" = "light" ]; then
+  mode="$1"
+else
+  mode=$(darkman get 2>/dev/null || echo "light")
+fi
+
+# Pick a random wallpaper from the appropriate directory
+wallpaper=$(find "$HOME/.wallpapers/$mode" -maxdepth 1 -type f | shuf -n1)
+
+# Fallback if no wallpapers found in the mode directory
+if [ -z "$wallpaper" ]; then
+  wallpaper=$(find "$HOME/.wallpapers" -maxdepth 2 -type f | shuf -n1)
+fi
 
 # Kill any existing swaybg instance
 pkill swaybg 2>/dev/null
 
 # Start swaybg with the random wallpaper
-swaybg -i "$wallpaper" -m fill & disown
+nohup swaybg -i "$wallpaper" -m fill >/dev/null 2>&1 &

@@ -1,0 +1,12 @@
+[Unit]
+Description=Darkman theme daemon
+PartOf=graphical-session.target
+Before=xdg-desktop-portal.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/darkman run
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

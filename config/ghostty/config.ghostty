@@ -1,4 +1,4 @@
-theme = Catppuccin Latte
+theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
 
 confirm-close-surface = false
 window-decoration = none

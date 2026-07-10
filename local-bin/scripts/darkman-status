@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+mode=$(darkman get 2>/dev/null || echo "light")
+
+if [ "$mode" = "dark" ]; then
+  text=""   # fa-moon
+  tooltip="Dark mode — click to toggle"
+  class="dark"
+else
+  text=""   # fa-sun
+  tooltip="Light mode — click to toggle"
+  class="light"
+fi
+
+printf '{"text":"%s","class":"%s","alt":"%s","tooltip":"%s"}\n' \
+  "$text" "$class" "$mode" "$tooltip"

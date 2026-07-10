@@ -1,0 +1,4 @@
+#!/bin/sh
+# switch waybar colour theme on mode change
+cp "$HOME/.dotfiles/config/waybar/theme-$1.css" "$HOME/.config/waybar/theme.css"
+pkill -SIGUSR1 waybar 2>/dev/null || true

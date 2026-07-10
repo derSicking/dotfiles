@@ -1,0 +1,4 @@
+#!/bin/sh
+# Notify running Neovim instances that the theme has changed
+# Neovim catches SIGUSR1 via its Signal autocommand and reloads
+pkill -SIGUSR1 -x nvim 2>/dev/null || true

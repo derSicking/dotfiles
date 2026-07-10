@@ -1,0 +1,3 @@
+#!/bin/sh
+# darkman/40-swaybg — reload wallpaper on theme switch
+$HOME/.local/bin/scripts/swaybg-random "$1"

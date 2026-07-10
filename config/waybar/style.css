@@ -1,36 +1,33 @@
+@import url("theme.css");
+
 * {
-  /* `otf-font-awesome` is required to be installed for icons */
   font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
   font-size: 16px;
 }
 
 window#waybar {
   background-color: transparent;
-  color: #111111;
-  text-shadow: 0 0 4px rgba(239, 241, 245, 0.5);
+  color: @text;
+  text-shadow: 0 0 4px @shadow;
 }
 
 #workspaces button {
   padding: 0 15px;
   margin-right: 5px;
-  background: linear-gradient(
-    to bottom,
-    rgba(239, 241, 245, 0.3),
-    rgba(172, 176, 190, 0.2)
-  );
+  background: linear-gradient(to bottom, @btn-bg-top, @btn-bg-bottom);
   border-radius: 100px;
-  border: 1px solid rgba(220, 224, 232, 0.35);
-  color: #111111;
+  border: 1px solid @border;
+  color: @text;
   text-shadow: inherit;
 }
 
 #workspaces button:hover {
   background: linear-gradient(
     to bottom,
-    rgba(204, 208, 218, 0.5),
-    rgba(172, 176, 190, 0.35)
+    @btn-bg-hover-top,
+    @btn-bg-hover-bottom
   );
-  border: 1px solid rgba(220, 224, 232, 0.35);
+  border: 1px solid @border-hover;
   box-shadow: inherit;
   text-shadow: inherit;
 }
@@ -39,53 +36,39 @@ window#waybar {
 #workspaces button.active {
   background: linear-gradient(
     to bottom,
-    rgba(204, 208, 218, 0.5),
-    rgba(172, 176, 190, 0.35)
+    @btn-bg-hover-top,
+    @btn-bg-hover-bottom
   );
-  border: 1px solid rgba(220, 224, 232, 0.35);
+  border: 1px solid @border-hover;
 }
 
 #workspaces button.urgent {
-  background-color: #d20f39;
+  background-color: @urgent;
 }
 
 #mode {
   background: linear-gradient(
     to bottom,
-    rgba(204, 208, 218, 0.5),
-    rgba(172, 176, 190, 0.35)
+    @btn-bg-hover-top,
+    @btn-bg-hover-bottom
   );
   border-radius: 100px;
-  border: 1px solid rgba(220, 224, 232, 0.35);
-  color: #111111;
+  border: 1px solid @border;
+  color: @text;
 }
 
+#custom-darkman,
 #clock,
-#battery,
 #cpu,
 #memory,
-#disk,
-#temperature,
-#backlight,
-#network,
 #pulseaudio,
-#wireplumber,
-#custom-media,
 #tray,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#power-profiles-daemon,
-#mpd {
+#power-profiles-daemon {
   padding: 0 16px;
-  background: linear-gradient(
-    to bottom,
-    rgba(239, 241, 245, 0.5),
-    rgba(188, 192, 204, 0.3)
-  );
+  background: linear-gradient(to bottom, @mod-bg-top, @mod-bg-bottom);
   border-radius: 100px;
-  border: 1px solid rgba(220, 224, 232, 0.35);
-  color: #111111;
+  border: 1px solid @border;
+  color: @text;
 }
 
 .modules-left {
@@ -104,5 +87,5 @@ window#waybar {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
-  background-color: #d20f39;
+  background-color: @urgent;
 }

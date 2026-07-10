@@ -1,0 +1,3 @@
+#!/bin/sh
+# signal waybar to refresh the darkman module
+pkill -SIGRTMIN+1 waybar 2>/dev/null || true

@@ -6,6 +6,7 @@
   // "width": 1280, // Waybar width
   "ipc": true,
   "bar_id": "bar-0",
+  "on-sigusr1": "reload",
   "spacing": 10, // Gaps between modules (4px)
   // Choose the order of the modules
   "modules-left": ["sway/workspaces", "sway/mode"],
@@ -17,9 +18,18 @@
     "cpu",
     "memory",
     "tray",
+    "custom/darkman",
     "clock",
   ],
   // Modules configuration
+  "custom/darkman": {
+    "exec": "$HOME/.local/bin/scripts/darkman-status",
+    "interval": "once",
+    "signal": 1,
+    "return-type": "json",
+    "on-click": "darkman toggle",
+    "tooltip": true,
+  },
   "sway/workspaces": {
     "disable-scroll": true,
     "all-outputs": false,
