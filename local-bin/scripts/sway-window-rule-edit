@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# sway-window-rule-edit — Open editor with a rule template (runs in terminal)
+#
+# Called by sway-window-rule with a temp file containing pre-captured
+# window info. Not meant to be invoked directly.
+
+set -euo pipefail
+
+# ── Configuration ──────────────────────────────────────────────────────
+RULES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/50-rules-user.conf"
+
+# ── Helpers ────────────────────────────────────────────────────────────
+die() {
+    echo "[sway-window-rule] ERROR: $*" >&2
+    exit 1
+}
+
+# ── 1. Read the pre-captured info ─────────────────────────────────────
+info_file="${1:?Missing info file argument}"
+focused_json=$(cat "$info_file")
+rm -f "$info_file"  # clean up immediately
+
+app_id=$(echo "$focused_json" | jq -r '.app_id // empty')
+class=$(echo "$focused_json"  | jq -r '.window_properties.class // empty')
+title=$(echo "$focused_json"  | jq -r '.name // empty')
+
+if [[ -z "$app_id" && -z "$class" && -z "$title" ]]; then
+    die "No window info in captured data."
+fi
+
+# ── 2. Build criteria from ALL available fields ───────────────────────
+# Sway ANDs multiple criteria, so all specified fields must match.
+criteria_parts=()
+if [[ -n "$app_id" ]]; then criteria_parts+=('app_id="'"$app_id"'"'); fi
+if [[ -n "$class"  ]]; then criteria_parts+=('class="'"$class"'"');   fi
+if [[ -n "$title"  ]]; then criteria_parts+=('title="'"$title"'"');   fi
+
+# Join with space separator
+criterion="${criteria_parts[*]}"
+
+# Label uses the most specific identifier available
+if [[ -n "$app_id" ]]; then
+    label="$app_id"
+elif [[ -n "$class" ]]; then
+    label="$class"
+else
+    label="$title"
+fi
+label="${label:0:40}"
+
+# ── 3. Ensure the rules file exists ───────────────────────────────────
+rules_dir=$(dirname "$RULES_FILE")
+if [[ ! -d "$rules_dir" ]]; then
+    mkdir -p "$rules_dir"
+fi
+
+if [[ ! -f "$RULES_FILE" ]]; then
+    cat > "$RULES_FILE" <<- HEADER
+# 50-rules-user.conf — Per-window rules added by sway-window-rule
+#
+# This file is auto-included from sway/config.d/.
+# Edit it freely; changes take effect after "swaymsg reload".
+#
+HEADER
+fi
+
+# ── 4. Create a temp file with the rule template ──────────────────────
+temp_file=$(mktemp /tmp/sway-rule-XXXXXX.conf) \
+    || die "Failed to create temp file."
+
+cat > "$temp_file" << TEMPLATE
+# === ${label} — $(date '+%Y-%m-%d %H:%M')
+#     app_id=${app_id:-<none>}  class=${class:-<none>}  title=${title}
+for_window [$criterion] {
+  # Ref: https://i3wm.org/docs/userguide.html#for_window
+  # floating enable
+  # border pixel 3
+  # move container to workspace number 5
+  # move container to output right
+  # resize set width 800 px height 600 px
+}
+TEMPLATE
+
+# ── 5. Record mtime *before* opening the editor ──────────────────────
+orig_mtime=$(stat -c %Y "$temp_file")
+
+# ── 6. Open the editor ───────────────────────────────────────────────
+editor="${EDITOR:-nvim}"
+if [[ "$(basename "$editor")" = "nano" ]]; then
+    editor="nvim"
+fi
+
+echo "[sway-window-rule] Draft ready. Edit the rule, then save & quit."
+echo "[sway-window-rule] Quit without saving (or :cq) to cancel."
+
+case "$(basename "$editor")" in
+    code* | codium*)
+        "$editor" --goto "$temp_file:3"
+        ;;
+    *)
+        "$editor" "+3" "$temp_file"
+        ;;
+esac
+
+# ── 7. Check if the file was saved ────────────────────────────────────
+new_mtime=$(stat -c %Y "$temp_file")
+
+if [[ "$orig_mtime" == "$new_mtime" ]]; then
+    echo "[sway-window-rule] No changes saved — cancelled."
+    rm "$temp_file"
+    exit 0
+fi
+
+# ── 8. Append the saved content to the rules file ─────────────────────
+{
+    echo
+    cat "$temp_file"
+} >> "$RULES_FILE"
+
+echo "[sway-window-rule] Rule appended to $RULES_FILE"
+echo "[sway-window-rule] Reloading sway..."
+swaymsg reload
+rm "$temp_file"

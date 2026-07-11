@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# sway-window-rule — Capture focused window, then launch editor in a terminal
+#
+# Usage:  Bind directly in your Sway config (NO $term -e wrapper):
+#           bindsym --whole-window $mod+Ctrl+button3 exec scripts/sway-window-rule
+#
+# This script runs in the context of the click (before the terminal opens),
+# so it captures the correct focused window. Then it hands off to
+# sway-window-rule-edit inside a terminal.
+#
+# Depends on: swaymsg, jq, $term (ghostty)
+
+set -euo pipefail
+
+# ── 1. Capture focused window info ────────────────────────────────────
+info_file=$(mktemp /tmp/sway-rule-info-XXXXXX.json)
+
+swaymsg -t get_tree 2>/dev/null | \
+    jq 'recurse(.nodes[], .floating_nodes[]) | select(.focused == true)' \
+    > "$info_file"
+
+# Verify we got something useful — exit silently if not (no notification spam).
+if ! jq -e '.app_id or .window_properties.class' "$info_file" >/dev/null 2>&1; then
+    rm -f "$info_file"
+    exit 1
+fi
+
+# ── 2. Launch the editor inside a terminal ────────────────────────────
+# Use the same terminal as in the sway config (ghostty).
+term="${TERMINAL:-ghostty}"
+
+exec "$term" -e sway-window-rule-edit "$info_file"
