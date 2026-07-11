@@ -9,4 +9,5 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo "Creating symlinks for darkman ($HOME/.local/share/darkman/ from $SCRIPT_DIR)"
 
 shopt -s dotglob
+rm $HOME/.local/share/darkman
 ln -sf "$SCRIPT_DIR" $HOME/.local/share/darkman

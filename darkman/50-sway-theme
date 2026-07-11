@@ -1,0 +1,6 @@
+#!/bin/sh
+# darkman/50-sway-theme — switch sway title bar colours on mode change
+# $1 is "dark" or "light" (set by darkman)
+
+cp "$HOME/.dotfiles/config/sway/theme-$1.conf" "$HOME/.config/sway/theme.conf"
+swaymsg reload

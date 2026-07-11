@@ -234,6 +234,9 @@ smart_gaps on
 
 default_border none
 
+# Catppuccin title bar colors (for tabbed/stacked layouts); darkman switches this file
+include theme.conf
+
 # Per-app inactive-window opacity (tweak the dict in inactive-opacity.py)
 exec ~/.config/sway/inactive-opacity.py
 
