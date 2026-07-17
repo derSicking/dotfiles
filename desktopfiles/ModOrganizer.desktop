@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Mod Organizer 2 (Skyrim SE)
+Comment=Launch Mod Organizer 2 in Skyrim Proton Prefix
+Exec=env WINEDLLOVERRIDES="mscoree=n,b" protontricks-launch --appid 489830 "/home/frederik/Games/Steam/steamapps/compatdata/489830/pfx/drive_c/Modding/MO2/ModOrganizer.exe"
+Terminal=false
+Type=Application
+Categories=Game;Utility;
+StartupWMClass=ModOrganizer.exe

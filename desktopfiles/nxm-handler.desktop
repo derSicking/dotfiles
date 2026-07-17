@@ -1,0 +1,7 @@
+# https://github.com/luluco250/nxm-handler
+[Desktop Entry]
+Type=Application
+Name=Nexus Mods Scheme Handler
+Exec=/home/frederik/.local/bin/scripts/nxm-handler %u
+StartupNotify=false
+MimeType=x-scheme-handler/nxm

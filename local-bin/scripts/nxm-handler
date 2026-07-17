@@ -1,0 +1,13 @@
+#!/bin/bash
+
+URL="$1"
+
+if [[ -z "$URL" ]]; then
+    echo "No URL provided"
+    exit 1
+fi
+
+STEAM_APPID=489830
+MO_EXE="/home/frederik/Games/Steam/steamapps/compatdata/${STEAM_APPID}/pfx/drive_c/Modding/MO2/ModOrganizer.exe"
+
+protontricks-launch --appid "$STEAM_APPID" "$MO_EXE" "$URL" & disown -h

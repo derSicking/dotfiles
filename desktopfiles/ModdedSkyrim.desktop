@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Modded Skyrim
+Exec=protontricks-launch --appid 489830 "/home/frederik/Games/Steam/steamapps/compatdata/489830/pfx/drive_c/Modding/MO2/ModOrganizer.exe" "moshortcut://Skyrim Special Edition:skse64_loader"
+Terminal=false
+Type=Application
+Categories=Game;
