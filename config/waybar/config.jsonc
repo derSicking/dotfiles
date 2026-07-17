@@ -2,21 +2,21 @@
 {
   // "layer": "top", // Waybar at top layer
   "position": "bottom", // Waybar position (top|bottom|left|right)
-  "height": 40, // Waybar height (to be removed for auto height)
+  "height": 26, // Waybar height
   // "width": 1280, // Waybar width
   "ipc": true,
   "bar_id": "bar-0",
   "on-sigusr1": "reload",
-  "spacing": 10, // Gaps between modules (4px)
+  "spacing": 4, // Gaps between modules
   // Choose the order of the modules
-  "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": [],
+  "modules-left": ["custom/apps", "sway/mode"],
+  "modules-center": ["sway/workspaces"],
   "modules-right": [
     // "idle_inhibitor",
     "pulseaudio",
-    "power-profiles-daemon",
-    "cpu",
-    "memory",
+    // "power-profiles-daemon",
+    // "cpu",
+    // "memory",
     "tray",
     "custom/darkman",
     "clock",
@@ -29,6 +29,12 @@
     "return-type": "json",
     "on-click": "darkman toggle",
     "tooltip": true,
+  },
+  "custom/apps": {
+    "format": "  ",
+    "on-click": "$HOME/.local/bin/scripts/quicklaunch",
+    "tooltip": "Applications",
+    "interval": "once",
   },
   "sway/workspaces": {
     "disable-scroll": true,

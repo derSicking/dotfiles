@@ -8,8 +8,8 @@
 @define-color lavender #b7bdf8;
 
 @define-color shadow         alpha(#1e2030, 0.6);
-@define-color border         alpha(#6e738d, 0.45);
-@define-color border-hover   alpha(#b7bdf8, 0.5);
+@define-color border         alpha(#6e738d, 0.55);
+@define-color border-hover   @border;
 
 @define-color mod-bg-top            alpha(#363a4f, 0.7);
 @define-color mod-bg-bottom         alpha(#494d64, 0.3);
@@ -17,5 +17,8 @@
 @define-color btn-bg-bottom         alpha(#5b6078, 0.2);
 @define-color btn-bg-hover-top      alpha(#494d64, 0.7);
 @define-color btn-bg-hover-bottom   alpha(#5b6078, 0.55);
+
+@define-color bar-bg alpha(#24273a, 0.55);
+@define-color module-bg alpha(#363a4f, 0.5);
 
 @define-color urgent #ed8796;

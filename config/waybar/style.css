@@ -2,44 +2,37 @@
 
 * {
   font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 window#waybar {
-  background-color: transparent;
+  background-color: @bar-bg;
   color: @text;
-  text-shadow: 0 0 4px @shadow;
+  border-top: 1px solid @border;
 }
 
 #workspaces button {
-  padding: 0 15px;
-  margin-right: 5px;
-  background: linear-gradient(to bottom, @btn-bg-top, @btn-bg-bottom);
-  border-radius: 100px;
-  border: 1px solid @border;
+  padding: 1px 6px 0 6px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid @border;
+  border-radius: 0;
   color: @text;
-  text-shadow: inherit;
 }
 
 #workspaces button:hover {
-  background: linear-gradient(
-    to bottom,
-    @btn-bg-hover-top,
-    @btn-bg-hover-bottom
-  );
-  border: 1px solid @border-hover;
-  box-shadow: inherit;
-  text-shadow: inherit;
+  background: @module-bg;
+  border: none;
+  border-right: 1px solid @border;
+  color: @text;
 }
 
 #workspaces button.focused,
 #workspaces button.active {
-  background: linear-gradient(
-    to bottom,
-    @btn-bg-hover-top,
-    @btn-bg-hover-bottom
-  );
-  border: 1px solid @border-hover;
+  background: @module-bg;
+  border: none;
+  border-right: 1px solid @border;
+  color: @text;
 }
 
 #workspaces button.urgent {
@@ -47,16 +40,14 @@ window#waybar {
 }
 
 #mode {
-  background: linear-gradient(
-    to bottom,
-    @btn-bg-hover-top,
-    @btn-bg-hover-bottom
-  );
-  border-radius: 100px;
-  border: 1px solid @border;
+  padding: 1px 6px 0 6px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid @border;
   color: @text;
 }
 
+#custom-apps,
 #custom-darkman,
 #clock,
 #cpu,
@@ -64,21 +55,25 @@ window#waybar {
 #pulseaudio,
 #tray,
 #power-profiles-daemon {
-  padding: 0 16px;
-  background: linear-gradient(to bottom, @mod-bg-top, @mod-bg-bottom);
-  border-radius: 100px;
-  border: 1px solid @border;
+  padding: 1px 8px 0 8px;
+  background: @module-bg;
+  border: none;
+  border-right: 1px solid @border;
   color: @text;
 }
 
 .modules-left {
-  margin-left: 5px;
-  margin-bottom: 5px;
+  margin: 0;
+}
+
+.modules-center {
+  margin: 0;
+  border-left: 1px solid @border;
 }
 
 .modules-right {
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin: 0;
+  border-left: 1px solid @border;
 }
 
 #tray > .passive {

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Curated app launcher menu
+# Format: "Display label|command to run"
+# Add or remove entries below — one line per app, label comes first.
+apps=(
+  "  Browser|google-chrome"
+  "  Terminal|ghostty"
+  "  Files|thunar"
+)
+
+# Build the rofi menu from labels only
+labels=""
+for entry in "${apps[@]}"; do
+  labels+="${entry%%|*}\n"
+done
+
+chosen=$(echo -e "$labels" | rofi -dmenu -p "Quick Launch" -theme ~/.config/rofi/config.rasi)
+
+# Find the chosen entry and run its command
+for entry in "${apps[@]}"; do
+  label="${entry%%|*}"
+  cmd="${entry#*|}"
+  if [[ "$chosen" == "$label" ]]; then
+    eval "$cmd"
+    break
+  fi
+done

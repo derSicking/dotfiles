@@ -2,3 +2,4 @@ config/nvim/plugin
 config/tmux/plugins
 config/waybar/theme.css
 config/sway/theme.conf
+config/rofi/theme.rasi

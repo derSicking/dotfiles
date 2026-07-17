@@ -1,12 +1,7 @@
 #!/bin/sh
 # darkman/35-rofi — switch rofi theme between light (latte) and dark (macchiato)
 case "$1" in
-  dark)
-    sed -i 's/@import "catppuccin-latte"/@import "catppuccin-macchiato"/' \
-      "$HOME/.config/rofi/config.rasi"
-    ;;
-  light)
-    sed -i 's/@import "catppuccin-macchiato"/@import "catppuccin-latte"/' \
-      "$HOME/.config/rofi/config.rasi"
-    ;;
+  dark)  src="catppuccin-macchiato" ;;
+  light) src="catppuccin-latte" ;;
 esac
+cp "$HOME/.dotfiles/config/rofi/$src.rasi" "$HOME/.config/rofi/theme.rasi"
