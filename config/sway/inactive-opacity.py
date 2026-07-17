@@ -13,19 +13,27 @@ import i3ipc
 # The None key is the fallback for any app not listed.
 OPACITIES = {
     None: 0.85,  # default for all other windows
+    'com.mitchellh.ghostty': 0.75,
     # Examples
     # 'firefox': 0.6,
     # 'ghostty': 0.7,
     # 'thunderbird': 0.8,
 }
 
+# Opacity for focused windows (set to <1.0 for apps you want slightly transparent when focused)
+FOCUSED_OPACITIES = {
+    'com.mitchellh.ghostty': 0.95,
+}
+
 
 def apply(ipc):
-    """Apply opacity to all windows: focused stays at 1, rest at OPACITIES."""
+    """Apply opacity to all windows: focused uses FOCUSED_OPACITIES, rest uses OPACITIES."""
     focused = ipc.get_tree().find_focused()
     for win in ipc.get_tree():
         if win.id == focused.id:
-            win.command('opacity 1')
+            app = win.app_id or win.window_class
+            val = FOCUSED_OPACITIES.get(app, 1.0)
+            win.command(f'opacity {val}')
         else:
             app = win.app_id or win.window_class
             val = OPACITIES.get(app, OPACITIES[None])
@@ -35,10 +43,8 @@ def apply(ipc):
 def on_focus(ipc, event):
     focused = event.container
     app = focused.app_id or focused.window_class
-    focused.command('opacity 1')
-    # The previously focused window is now unfocused — apply its opacity.
-    # We don't know which one that was, so re-apply to all.
-    # (Simple and cheap enough for a few dozen windows.)
+    focused_val = FOCUSED_OPACITIES.get(app, 1.0)
+    focused.command(f'opacity {focused_val}')
     for win in ipc.get_tree():
         if win.id != focused.id:
             app = win.app_id or win.window_class
