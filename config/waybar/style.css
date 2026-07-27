@@ -59,6 +59,7 @@ window#waybar {
   background: @module-bg;
   border: none;
   border-right: 1px solid @border;
+  border-left: 1px solid @border;
   color: @text;
 }
 
@@ -73,7 +74,6 @@ window#waybar {
 
 .modules-right {
   margin: 0;
-  border-left: 1px solid @border;
 }
 
 #tray > .passive {
