@@ -3,16 +3,7 @@
   "formatter": {
     "prettier": {
       "command": ["prettier", "--write", "$FILE"],
-      "extensions": [
-        ".js",
-        ".ts",
-        ".html",
-        ".css",
-        ".scss",
-        ".json",
-        ".jsonc",
-        ".yaml",
-      ],
+      "extensions": [".js", ".ts", ".html", ".css", ".scss", ".json", ".jsonc"],
     },
     "custom-markdown-formatter": {
       "command": ["prettier", "--prose-wrap=always", "--write", "$FILE"],
