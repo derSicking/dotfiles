@@ -1,5 +1,3 @@
-local utils = require("custom.utils")
-
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local rename_symbol = function()
@@ -43,6 +41,12 @@ end
 local default_probe_dir = get_probe_dir(vim.fn.getcwd())
 
 vim.lsp.config("angularls", {
+	filetypes = {
+		"typescript",
+		"html",
+		"htmlangular",
+	},
+	root_markers = { "angular.json" },
 	cmd = {
 		"npx",
 		"ngserver",
@@ -51,21 +55,7 @@ vim.lsp.config("angularls", {
 		default_probe_dir,
 		"--ngProbeLocations",
 		default_probe_dir,
-		"--angularCoreVersion",
 	},
-	on_new_config = function(new_config, new_root_dir)
-		local new_probe_dir = get_probe_dir(new_root_dir)
-		new_config.cmd = {
-			"npx",
-			"ngserver",
-			"--stdio",
-			"--tsProbeLocations",
-			new_probe_dir,
-			"--ngProbeLocations",
-			new_probe_dir,
-			"--angularCoreVersion",
-		}
-	end,
 	capabilities = capabilities,
 	on_attach = on_attach,
 	flags = {
@@ -73,6 +63,8 @@ vim.lsp.config("angularls", {
 		debounce_text_changes = 500,
 	},
 })
+
+vim.lsp.enable("angularls")
 
 -- vim.lsp.config("*", {
 -- 	on_attach = on_attach,
