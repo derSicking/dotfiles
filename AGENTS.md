@@ -1,52 +1,59 @@
 # AGENTS.md — `.dotfiles`
 
-## Setup
-
 Clone to `$HOME/.dotfiles/`, then run `./install` from the repo root.
 
 ## How `install` works
 
-Finds and executes **all** scripts named either `dotfile_setup` or `dotfile_link` (in that order) in any subdirectory:
+`install` `cd`s to the repo root, then finds and runs every script named
+`dotfile_setup` (all of them first), then every script named `dotfile_link`,
+anywhere in the tree:
 
-- **`dotfile_setup`** — one-time setup (e.g. cloning nvm, tpm). Runs first.
-- **`dotfile_link`** — creates symlinks from the repo subtree to the corresponding `$HOME` location. The script removes itself from the target after linking.
+- **`dotfile_setup`** — one-time installs (nvm, tpm, oh-my-zsh, opencode file links).
+- **`dotfile_link`** — symlinks a repo subtree to its `$HOME` location, then removes the linked copy of itself.
 
-> **Never run `dotfile_link` or `dotfile_setup` scripts directly.** They assume `PWD` is the repo root (the `install` script sources the repo root path before calling them). Always invoke them via `./install` from the repo root.
+Scripts resolve their own directory via `BASH_SOURCE`, but always invoke them
+via `./install` — running one in isolation skips the setup-before-link ordering.
 
 Symlink targets by directory:
 
 | Repo dir | Links to |
 |---|---|
 | `home/` | `$HOME/` (all files, including dotfiles) |
-| `config/` | `$HOME/.config/` (each subdirectory, e.g. nvim, i3) |
+| `config/` | `$HOME/.config/` (each subdirectory) |
 | `local-bin/` | `$HOME/.local/bin/` |
 | `desktopfiles/` | `$HOME/.local/share/applications/desktopfiles` |
+| `darkman/` | `$HOME/.local/share/darkman` (whole dir, replaces existing) |
+| `oh-my-zsh/plugins/` | `$HOME/.oh-my-zsh/custom/plugins/` |
 
 ## Prerequisites
 
-Packages listed in `stuff-to-install.md` must be installed **before** running `install`. This includes shell, display server, audio, network, tools (tmux, neovim, fzf, docker, etc.), and AUR packages.
+Packages listed in `stuff-to-install.md` must be installed **before** `install`.
 
-## Ignores (`.gitignore`)
+## Theming gotcha
 
-- `config/nvim/plugin` — managed by Neovim plugin manager
-- `config/tmux/plugins` — managed by TPM
+`config/waybar/theme.css`, `config/sway/theme.conf`, `config/rofi/theme.rasi`
+are gitignored and regenerated at runtime by darkman hooks
+(`darkman/45-waybar`, `darkman/50-sway-theme`, `darkman/35-rofi`) from the
+committed `theme-{light,dark}.*` variants. Edit the variants, never the
+generated files. Per-window sway rules are auto-generated in
+`config/sway/config.d/` by `local-bin/scripts/sway-window-rule`.
 
 ## Config linking quirks
 
-- `config/dotfile_link` skips subdirectories already present in `~/.config/` (so apps that manage their own runtime data, like opencode, are never overwritten).
-- `config/opencode/dotfile_setup` symlinks individual files (not the whole subdirectory) because OpenCode manages its own plugins/agents/themes there.
+- `config/dotfile_link` skips subdirectories already present in `~/.config/`
+  (apps that manage their own runtime data, like opencode, are never overwritten).
+- `config/opencode/dotfile_setup` symlinks individual files (not the whole
+  subdirectory) into `~/.config/opencode/`, which opencode itself also manages.
 
 ## Special files at repo root
 
-- `caps2esc.yaml` — `interception-tools` config; linked to `/etc/interception/udevmon.d/` (needs root).
-- `usde` — custom XKB symbols file (US layout + German umlauts); linked to `/usr/share/X11/xkb/symbols/` (needs root).
+- `caps2esc.yaml` — `interception-tools` config; manually linked to `/etc/interception/udevmon.d/` (root).
+- `usde` — custom XKB symbols file (US layout + German umlauts); manually linked to `/usr/share/X11/xkb/symbols/` (root).
+- Neither has a `dotfile_link` script; linking them is a manual step.
 
-## Commit style
+## References & conventions
 
-`type: short description` (e.g. `fix:`, `add:`, `chore:`).
-
-## Notes
-
-- `oh-my-zsh/` has a `dotfile_setup` (manages its own install), not a `dotfile_link`.
-- `home/.zshrc` uses `powerlevel10k` theme and a custom oh-my-zsh plugin `frederik`.
+- Read `config/nvim/AGENTS.md` before touching the Neovim config (vim.pack, blink.cmp, LSP quirks).
+- Snippets live in `config/nvim-snippets/` (linked via `config/`).
+- Commit style: `type: short description` (`add:`, `fix:`, `update:`, `chore:`).
 - No build, test, lint, or typecheck tooling in this repo.
