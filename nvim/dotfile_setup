@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+NVIM_DIR="$HOME/.config/nvim"
+REPO_URL="git@github.com:derSicking/nvim-config.git"
+
+if [ -e "$NVIM_DIR" ]; then
+  echo "WARNING: $NVIM_DIR exists, skipping"
+else
+  echo "Cloning nvim config..."
+  git clone "$REPO_URL" "$NVIM_DIR"
+fi
