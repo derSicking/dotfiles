@@ -11,14 +11,9 @@
     },
   },
   "command": {
-    "done": {
-      "description": "Have the teacher agent review your work and suggest next steps.",
-      "agent": "teacher",
-      "template": "I did this step. Check my work using the read tool and git status/diff. If my work is good, get me started on the next step. If not, tell me what to fix. If the changes are large enough/a finished feature, suggest a to do a commit. $ARGUMENTS",
-    },
-    "commit": {
-      "description": "Do a git commit.",
-      "template": "Do a git commit. Use git log to make the message match the style of other recent messages. Use git status/diff to get an idea of the changes. Write a detailed commit message.",
+    "role-reminder": {
+      "description": "The agent reminds itself of its role by rereading the agent prompt.",
+      "template": "Please remind yourself of your role by reading your agent prompt file. You can find it in ~/.config/opencode/agents/. Please adhere to your prompt closely.",
     },
   },
   "permission": {
