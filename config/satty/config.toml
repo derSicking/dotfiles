@@ -1,0 +1,4 @@
+# Satty configuration file
+[general]
+# Command called on copy — wl-copy infers the MIME type from stdin data
+copy-command = "wl-copy"
