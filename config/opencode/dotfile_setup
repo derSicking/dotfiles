@@ -12,5 +12,11 @@ mkdir -p "$CONFIG_DIR"
 for f in "$SCRIPT_DIR"/*; do
   base=$(basename "$f")
   [ "$base" = "dotfile_setup" ] && continue
+  # Skip if the target already exists (real dir/file or symlink): re-linking
+  # an existing symlink-to-directory creates a nested link (e.g. agents/agents).
+  if [ -e "$CONFIG_DIR/$base" ] || [ -L "$CONFIG_DIR/$base" ]; then
+    echo "$base found in $CONFIG_DIR, skipping"
+    continue
+  fi
   ln -sf "$f" "$CONFIG_DIR/$base"
 done
