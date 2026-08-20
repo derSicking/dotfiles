@@ -137,9 +137,9 @@ input * {
     bindsym $mod+Control+Right move workspace to output right
 
     # Map workspaces to outputs
-    workspace 1 output $screen-center
-    workspace 2 output $screen-right
-    workspace 3 output $screen-left
+    workspace 1 output $screen-left
+    workspace 2 output $screen-center
+    workspace 3 output $screen-right
 
     # Switch to workspace
     bindsym $mod+1 workspace number 1
