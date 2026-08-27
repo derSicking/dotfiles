@@ -17,8 +17,14 @@ __all_sessions() {
     if [[ -e "$dir/.git" ]]; then
       echo "$dir"
     else
-      # Search 3 levels deep for any nested .git dirs and output their parents
-      find -L "$dir" -maxdepth 3 -name ".git" -printf "%h\n" 2>/dev/null
+      # Search 3 levels deep for any nested .git dirs and output their parents.
+      # If none are found, fall back to listing the dir itself.
+      nested=$(find -L "$dir" -maxdepth 3 -name ".git" -printf "%h\n" 2>/dev/null)
+      if [[ -n $nested ]]; then
+        echo "$nested"
+      else
+        echo "$dir"
+      fi
     fi
   done < <(find -L $(__echo_lines "$HOME/.config/tmux/find-dirs.conf") \
     -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
