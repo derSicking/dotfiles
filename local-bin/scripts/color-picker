@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+pixel=$(slurp -p)                          # click a point -> e.g. "1234,567 1x1"
+hex=$(grim -g "$pixel" -t ppm - | magick - -format '%[hex:u.p{0,0}]' info:-)
+
+wl-copy "$hex"                             # copy to clipboard
+notify-send "Color picked" "$hex"
