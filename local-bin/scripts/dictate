@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# dictate — toggle recording; open the transcript in a floating ghostty + nvim.
+# Bound to Right Ctrl in sway. Transcripts land in /tmp/voxtype/.
+set -uo pipefail
+
+runtime="${XDG_RUNTIME_DIR:-/tmp}/voxtype"
+spooldir="/tmp/voxtype"
+marker="$runtime/dictate.path"
+mkdir -p "$runtime" "$spooldir"
+
+case "$(voxtype status 2>/dev/null || echo idle)" in
+  recording)
+    voxtype record stop
+    for _ in $(seq 1 150); do [ "$(voxtype status 2>/dev/null)" = "idle" ] && break; sleep 0.2; done
+    file=""; [ -f "$marker" ] && file="$(cat "$marker")"; rm -f "$marker"
+    for _ in $(seq 1 20); do [ -n "$file" ] && [ -s "$file" ] && break; sleep 0.2; done
+    if [ -n "$file" ] && [ -s "$file" ]; then
+      swaymsg exec -- ghostty --title=voxtype-dictation --gtk-single-instance=false \
+        -e "$HOME/.local/bin/scripts/dictate-nvim" "$file" >/dev/null 2>&1
+    else
+      notify-send -a Voxtype "Dictation" "No speech detected." 2>/dev/null || true
+    fi
+    ;;
+  idle)
+    file="$spooldir/dictation-$(date +%Y%m%d-%H%M%S).txt"
+    printf '%s\n' "$file" > "$marker"
+    voxtype record start --file="$file"
+    ;;
+esac

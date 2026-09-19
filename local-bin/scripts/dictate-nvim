@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# dictate-nvim — open a transcript in nvim with the window title pinned so the
+# sway float rule matches. Invoked by the dictate script via ghostty -e.
+exec nvim \
+  -c 'set title' -c 'set titlestring=voxtype-dictation' \
+  -c 'set wrap' -c 'set linebreak' -c 'set nolist' \
+  -c 'normal! G' "$@"
