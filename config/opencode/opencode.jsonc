@@ -25,6 +25,16 @@
       "template": "Please remind yourself of your role by reading your agent prompt file. You can find it in ~/.config/opencode/agents/. Please adhere to your prompt closely.",
     },
   },
+  "mcp": {
+    "vikunja": {
+      "type": "remote",
+      "url": "https://tasks.dersicking.de/api/v2/mcp",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {file:~/.dotfiles/secrets/vikunja-mcp-token}",
+      },
+    },
+  },
   "permission": {
     "*": "ask",
     "read": "allow",
@@ -66,6 +76,8 @@
       "du *": "allow",
       "stat": "allow",
       "stat *": "allow",
+      "true": "allow",
+      "true *": "allow",
       "readlink": "allow",
       "readlink *": "allow",
       "realpath": "allow",
