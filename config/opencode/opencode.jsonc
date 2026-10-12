@@ -18,6 +18,10 @@
       "command": ["prettier", "--prose-wrap=always", "--write", "$FILE"],
       "extensions": [".md"],
     },
+    "rustfmt": {
+      "command": ["cargo", "fmt", "--", "$FILE"],
+      "extensions": [".rs"],
+    },
   },
   "command": {
     "role-reminder": {
@@ -26,12 +30,12 @@
     },
   },
   "mcp": {
-    "vikunja": {
+    "ytmcp": {
       "type": "remote",
-      "url": "https://tasks.dersicking.de/api/v2/mcp",
-      "enabled": true,
+      "url": "https://ytmcp.dersicking.de",
+      "enabled": false,
       "headers": {
-        "Authorization": "Bearer {file:~/.dotfiles/secrets/vikunja-mcp-token}",
+        "Authorization": "Bearer {file:~/.dotfiles/secrets/youtrack-token}",
       },
     },
   },
@@ -44,6 +48,10 @@
     "todowrite": "allow",
     "websearch": "allow",
     "webfetch": "allow",
+    "skill": {
+      "youtrack-*": "deny",
+      "youtrack-init": "ask",
+    },
     "bash": {
       "*": "ask",
       "ls": "allow",
