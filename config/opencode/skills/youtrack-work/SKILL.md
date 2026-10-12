@@ -24,7 +24,8 @@ anything equivalent. They override this skill wherever they disagree.
 
 ## Preconditions
 
-The `ytmcp_*` MCP tools must be present (e.g. the `ytmcp` server). Work accepts
+The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
+Code Mode). Work accepts
 a ticket that is Ready or In Progress. If the user asks to work a specific
 ticket, just work it — advance it to In Progress as needed, no need to run
 `youtrack-pick` first. Pick is a standalone helper for choosing what to work on

@@ -3,10 +3,10 @@ name: youtrack-init
 description:
   Use when the user asks to connect this repo to the YouTrack MCP — "set up
   youtrack", "connect this repo to youtrack", "init the board", or when the
-  ytmcp tools are missing and a repo needs the opt-in. Bootstraps the per-repo
-  opencode config (enable the remote ytmcp MCP, allow its tools and the
-  youtrack-* skills), then connects the repo to its project via list_projects
-  and records it. Idempotent, so rerunning reconciles rather than duplicating.
+  ytmcp tools are missing and a repo needs the opt-in. Writes the per-repo
+  opt-in marker and the project permission rules, then connects the repo to its
+  project via list_projects and records it. Idempotent, so rerunning reconciles
+  rather than duplicating.
 ---
 
 # Skill: youtrack-init
@@ -22,7 +22,8 @@ reconciles rather than duplicating.
 
 ## Step 0 — Detect the phase
 
-1. Note whether the `ytmcp_*` MCP tools are available in this session.
+1. Note whether the `ytmcp` server's tools are available in this session
+   (Code Mode exposes them as `tools["ytmcp"].*`).
 2. Read the repo's project config (`opencode.json` or `opencode.jsonc` at the
    root, or `.opencode/opencode.json`).
 
@@ -31,42 +32,50 @@ reconciles rather than duplicating.
 
 ## Phase 1 — Bootstrap the opt-in
 
-The ytmcp MCP is defined globally but disabled; a repo opts in per repo by
-flipping its `enabled` flag. Until the repo opts in _and_ opencode restarts,
-there is no way to reach YouTrack.
+The `ytmcp` MCP is defined once in the global config but disabled. OpenCode V2
+replaces a same-name MCP server object instead of merging it, so a repo cannot
+flip `disabled` in its own config; it opts in with a marker file instead. Until
+the repo opts in _and_ opencode restarts, there is no way to reach YouTrack.
 
-1. **Find the repo's project config and merge in place.** Look, in order, for an
-   existing `opencode.json` or `opencode.jsonc` at the repo root, then
-   `.opencode/opencode.json`. Merge the opt-in into whichever exists — **do not
-   create a second project config beside it.** Only when the repo has no project
-   config at all, create `.opencode/opencode.json`.
+1. **Write the opt-in marker.** Create `.opencode/ytmcp.json` (make the
+   `.opencode/` directory if needed), starting with an empty project — Phase 2
+   fills it in:
 
-   The global config already defines the `ytmcp` server (its `type` and `url`);
-   the repo only overrides `enabled`. Add these keys, preserving everything
-   already present:
+   ```json
+   { "project": "" }
+   ```
+
+   The global `ytmcp-enroll` plugin enables the shared `ytmcp` server for any
+   location that carries this file, so the repo never repeats the server's
+   `type`, `url`, or token.
+
+2. **Add the project permission rules.** Find the repo's project config and
+   merge in place. Look, in order, for an existing `opencode.json` or
+   `opencode.jsonc` at the repo root, then `.opencode/opencode.json`. Merge into
+   whichever exists — **do not create a second project config beside it.** Only
+   when the repo has no project config at all, create `.opencode/opencode.json`.
+   Add these rules, preserving everything already present:
 
    ```json
    {
      "$schema": "https://opencode.ai/config.json",
-     "mcp": { "ytmcp": { "enabled": true } },
-     "permission": {
-       "skill": { "youtrack-*": "allow" },
-       "ytmcp_*": "allow"
-     }
+     "permissions": [
+       { "action": "skill", "resource": "youtrack-*", "effect": "allow" },
+       { "action": "ytmcp_*", "resource": "*", "effect": "allow" }
+     ]
    }
    ```
 
-   As long as the `mcp` key matches the global definition's name, the enabled
-   flag override is enough — the server's type and URL come from the global
-   config. The `ytmcp_*` permission rule stops every MCP call from prompting;
-   without it the tools inherit the global `"*": "ask"`.
+   The `ytmcp_*` rule stops every MCP call from prompting; without it the tools
+   inherit the global `"*": "ask"`. The `skill` rule re-enables the `youtrack-*`
+   skills, which the global config denies by default.
 
-   Merge semantics: add only the missing keys. Never touch unrelated permissions
-   or MCP servers, and in a `.jsonc` file preserve existing comments — edit the
+   Merge semantics: add only the missing rules. Never touch unrelated
+   permissions, and in a `.jsonc` file preserve existing comments — edit the
    file, do not rewrite it as plain JSON.
 
-2. Show the user the exact file after writing it.
-3. **Stop** and tell the user: config is loaded at startup, so quit and relaunch
+3. Show the user the exact files after writing them.
+4. **Stop** and tell the user: config is loaded at startup, so quit and relaunch
    opencode, then say `continue` to resume this skill.
 
 If the MCP is still unavailable after restart, the global YouTrack MCP
@@ -80,24 +89,24 @@ the user says `continue`.
 
 ### 2a. Verify connectivity
 
-Call `ytmcp_list_projects`. On an auth failure, stop and point at the token. On
-success, continue.
+Call `tools["ytmcp"].list_projects(…)`. On an auth failure, stop and point at
+the token. On success, continue.
 
 ### 2b. Find the project for this repo
 
 1. Read the repo: the directory name, the name from `git remote` if there is
    one, and the top of the README or AGENTS.md — these are your hints for what
    to look for.
-2. `ytmcp_list_projects` → the list is small and called rarely, so reason about
-   the best match directly. Propose the obvious single correct match, or the few
-   best candidates.
+2. `tools["ytmcp"].list_projects(…)` → the list is small and rarely called, so
+   reason about the best match directly. Propose the obvious single correct
+   match, or the few best candidates.
    - **One match / an obvious match** → propose it and confirm.
    - **Several plausible** → ask which one.
    - **None** → ask how to proceed with the `question` tool, presenting:
      1. _I have created/shared it now — check again_ → repeat
-        `ytmcp_list_projects` and find the project this time.
+        `tools["ytmcp"].list_projects(…)` and find the project this time.
      2. _Create a new project_ → gather the details, then call
-        `ytmcp_project_create`:
+        `tools["ytmcp"].project_create(…)`:
         - **name** — propose one from the repo (directory name / `git remote`),
           confirm.
         - **shortName** — propose an uppercase prefix derived from the repo,
@@ -110,9 +119,9 @@ success, continue.
         and hands the project and board to that user. Then record the project.
      3. _Show all projects_ → list everything and let the user pick.
 
-3. **Record the found project** in AGENTS.md (or the repo's rules file), so the
-   `youtrack-*` skills know which project to operate on. Note the project's
-   short name (e.g. `YTMCP`).
+3. **Record the found project** in `.opencode/ytmcp.json` (its `project` field),
+   so the `youtrack-*` skills know which project to operate on. Note the
+   project's short name (e.g. `YTMCP`).
 
 ### 2c. Already set up
 
@@ -122,18 +131,22 @@ be corrected manually on the rare occasion a project is renamed.
 
 ## Tool surface
 
-- `ytmcp_list_projects` — list the projects the token can access, so the repo
-  can be matched to its project.
-- `ytmcp_project_create` — create a project (cloning the shared "Init Template
+- `list_projects` — list the projects the token can access, so the repo can be
+  matched to its project.
+- `project_create` — create a project (cloning the shared "Init Template
   Board") and hand it over to a user; used only in the "create a new project"
   branch.
+
+OpenCode V2 exposes these through Code Mode, so call them as
+`tools["ytmcp"].list_projects(…)` and `tools["ytmcp"].project_create(…)`.
 
 ## Anti-patterns
 
 - Calling the YouTrack REST API, or `curl`, directly.
 - Creating a second project config beside an existing one instead of merging.
-- Restating the MCP `type`/`url` in the project config instead of only flipping
-  `enabled`.
+- Putting the `ytmcp` server definition (`type`/`url`) in a project config; the
+  marker opts the repo in, and the server stays defined once in the global
+  config.
 - Guessing the project instead of listing and confirming.
 - Recording a project without confirming it with the user.
 - Overwriting existing permissions or MCP servers while merging.

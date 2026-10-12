@@ -21,8 +21,8 @@ Ready ticket, by contrast, is trusted: it carries only what was actually agreed.
 
 ## Preconditions
 
-The `ytmcp_*` MCP tools must be present (e.g. the `ytmcp` server). If they are
-missing, run `youtrack-init` to opt the repo in.
+The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
+Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
 
 ## Scope
 

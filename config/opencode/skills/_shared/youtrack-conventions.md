@@ -122,15 +122,23 @@ Per type:
 
 ## 7. Tool surface conventions
 
-The MCP server is registered under the name `ytmcp`, so every tool is referenced
-by its fully-qualified name: `ytmcp_board`, `ytmcp_issue_read`,
-`ytmcp_issue_move`, and so on. These skills use only those hosted names; they
-know nothing about any dev or local variant of the server.
+The hosted MCP server is registered under the name `ytmcp`. OpenCode V2 exposes
+its tools through Code Mode, so a tool is called as
+`tools["ytmcp"].<tool>(…)` — e.g. `tools["ytmcp"].board(…)` or
+`tools["ytmcp"].issue_read(…)`. Their permission and logical names remain
+`<server>_<tool>`, i.e. `ytmcp_*`. These skills use only the hosted server; they
+know nothing about any dev or local variant of it.
+
+A repo opts in to the hosted server by carrying the marker
+`.opencode/ytmcp.json`, which records the repo's project short name (`project`).
+The global `ytmcp-enroll` plugin enables the shared `ytmcp` server for such
+locations, so read the project short name from that file before calling
+project-scoped tools. A repo without the marker has no `ytmcp` tools.
 
 - Tools address issues by their text identifier (e.g. `YTMCP-14`) directly — no
   numeric-id resolution step.
 - `project` is the first, required parameter of project-scoped tools
-  (`ytmcp_board`, `ytmcp_features`, `ytmcp_search`, `ytmcp_issue_create`).
+  (`board`, `features`, `search`, `issue_create` on the `ytmcp` server).
 - Tools require token pass-through: the caller's `Authorization` bearer token is
   forwarded verbatim to YouTrack. Never log it.
 - Field value sets (`Type`, `Priority`, `Size`, `Area`) are owned by the user.
