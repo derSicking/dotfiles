@@ -1,29 +1,48 @@
 #!/usr/bin/env bash
 # dictate — toggle recording; open the transcript in a floating ghostty + nvim.
 # Bound to Right Ctrl in sway. Transcripts land in /tmp/voxtype/.
+#
+# The daemon writes every transcription to the stable inbox file
+# /tmp/voxtype/dictation.txt (config output.file_path). This script claims it:
+# moves it to a timestamped name and opens it in nvim. Claiming also happens on
+# the next tap if the daemon auto-stopped a recording (max_duration) — so no
+# transcript is ever lost without its window.
 set -uo pipefail
 
-runtime="${XDG_RUNTIME_DIR:-/tmp}/voxtype"
 spooldir="/tmp/voxtype"
-marker="$runtime/dictate.path"
-mkdir -p "$runtime" "$spooldir"
+inbox="$spooldir/dictation.txt"
+mkdir -p "$spooldir"
+
+claim() {
+  if [ -s "$inbox" ]; then
+    local target="$spooldir/dictation-$(date +%Y%m%d-%H%M%S).txt"
+    mv -f "$inbox" "$target"
+    rm -f "$inbox.done"
+    swaymsg exec -- ghostty --title=voxtype-dictation --gtk-single-instance=false \
+      -e "$HOME/.local/bin/scripts/dictate-nvim" "$target" >/dev/null 2>&1
+    return 0
+  fi
+  rm -f "$inbox" "$inbox.done"
+  return 1
+}
+
+wait_for_idle() {
+  for _ in $(seq 1 300); do [ "$(voxtype status 2>/dev/null)" = "idle" ] && break; sleep 0.2; done
+}
 
 case "$(voxtype status 2>/dev/null || echo idle)" in
   recording)
     voxtype record stop
-    for _ in $(seq 1 150); do [ "$(voxtype status 2>/dev/null)" = "idle" ] && break; sleep 0.2; done
-    file=""; [ -f "$marker" ] && file="$(cat "$marker")"; rm -f "$marker"
-    for _ in $(seq 1 20); do [ -n "$file" ] && [ -s "$file" ] && break; sleep 0.2; done
-    if [ -n "$file" ] && [ -s "$file" ]; then
-      swaymsg exec -- ghostty --title=voxtype-dictation --gtk-single-instance=false \
-        -e "$HOME/.local/bin/scripts/dictate-nvim" "$file" >/dev/null 2>&1
-    else
-      notify-send -a Voxtype "Dictation" "No speech detected." 2>/dev/null || true
-    fi
+    wait_for_idle
+    claim || notify-send -a Voxtype "Dictation" "No speech detected." 2>/dev/null || true
+    ;;
+  transcribing)
+    wait_for_idle
+    claim || true
     ;;
   idle)
-    file="$spooldir/dictation-$(date +%Y%m%d-%H%M%S).txt"
-    printf '%s\n' "$file" > "$marker"
-    voxtype record start --file="$file"
+    if ! claim; then
+      voxtype record start
+    fi
     ;;
 esac
