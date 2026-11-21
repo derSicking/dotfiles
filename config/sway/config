@@ -247,7 +247,7 @@ default_border none
 include theme.conf
 
 # Per-app inactive-window opacity (tweak the dict in inactive-opacity.py)
-exec ~/.config/sway/inactive-opacity.py
+# exec ~/.config/sway/inactive-opacity.py
 
 # swayfx required
 blur enable
