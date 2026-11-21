@@ -16,21 +16,23 @@ Carry a ready ticket from understanding to the To Verify column. Refinement
 already settled the requirements and the concrete want; work starts from there
 and carries the ticket through, keeping it true to the code along the way.
 
-**First, read the shared conventions:**
-`~/.config/opencode/skills/_shared/youtrack-conventions.md`
+**First, read the shared conventions:** `../_shared/youtrack-conventions.md`,
+relative to this skill's directory (e.g. `~/.claude/skills/_shared/…` or
+`~/.config/opencode/skills/_shared/…`)
 
-Then read the repo's own rules — `AGENTS.md`, a teaching guide, `CONTRIBUTING`,
-anything equivalent. They override this skill wherever they disagree.
+Then read the repo's own rules — `AGENTS.md` / `CLAUDE.md`, a teaching guide,
+`CONTRIBUTING`, anything equivalent. They override this skill wherever they
+disagree.
 
 ## Preconditions
 
-The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
-Code Mode). Work accepts
-a ticket that is Ready or In Progress. If the user asks to work a specific
-ticket, just work it — advance it to In Progress as needed, no need to run
-`youtrack-pick` first. Pick is a standalone helper for choosing what to work on
-when the user does not know, not a gate here. If the ticket is in To Refine or
-Backlog, `youtrack-refine` comes first — say so rather than skipping that gate.
+The `ytmcp` server's tools must be available (see shared conventions §7 for how
+your harness exposes them). Work accepts a ticket that is Ready or In Progress.
+If the user asks to work a specific ticket, just work it — advance it to In
+Progress as needed, no need to run `youtrack-pick` first. Pick is a standalone
+helper for choosing what to work on when the user does not know, not a gate
+here. If the ticket is in To Refine or Backlog, `youtrack-refine` comes first —
+say so rather than skipping that gate.
 
 ## Phase 0 — Light sanity check
 
@@ -40,7 +42,7 @@ Refinement has already settled the requirements and the concrete want. Work does
 1. **Establish the baseline.** `git log`, `git status`, and the repo's own
    checks. Find the documented commands (Makefile, package scripts, task runner)
    rather than assuming them. Note the passing state.
-2. **Read the ticket.** `ytmcp_issue_read` — description, DoD, comments, links.
+2. **Read the ticket.** `ytmcp.issue_read` — description, DoD, comments, links.
    Confirm it is actually Ready (or In Progress) and its premise still matches
    the code. If the gap changed, the requirements are stale, or the design is
    invalid, **stop and hand back to `youtrack-refine`** rather than building on
@@ -84,10 +86,10 @@ The detailed API / data-shape design belongs here, not in refine:
 
 ## Phase 3 — Verify and finish
 
-11. **Record the outcome.** Add a comment (`ytmcp_comment_add`) stating what
+11. **Record the outcome.** Add a comment (`ytmcp.comment_add`) stating what
     shipped and any deviations, before the move.
 12. **Move to To Verify.**
-    `ytmcp_issue_move(id, from="In Progress", to="To Verify")` (the `from` guard
+    `ytmcp.issue_move(id, from="In Progress", to="To Verify")` (the `from` guard
     catches stale memory; Done is reachable only from To Verify, by
     `youtrack-verify`). Tell the user what to validate by hand — checks miss
     what a human sees. The next step is `youtrack-verify`.
@@ -99,7 +101,7 @@ The detailed API / data-shape design belongs here, not in refine:
   sanity check and hands back to refine if the ticket is no longer ready.
 - Work accepts a Ready or In Progress ticket; no need to run pick when the user
   names a specific ticket.
-- Every design choice goes through the `question` tool with options and a
+- Every design choice goes through the question tool with options and a
   recommendation.
 - One concept per step; verify after each with the repo's commands.
 - Never commit, push, or open a PR without explicit approval.

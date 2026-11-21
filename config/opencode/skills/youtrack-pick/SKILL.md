@@ -15,18 +15,20 @@ Decide what to work on next and enact that choice. Picking is a commitment: do
 not pick something that cannot actually be finished, and never silently pile up
 work.
 
-**First, read the shared conventions:**
-`~/.config/opencode/skills/_shared/youtrack-conventions.md`
+**First, read the shared conventions:** `../_shared/youtrack-conventions.md`,
+relative to this skill's directory (e.g. `~/.claude/skills/_shared/…` or
+`~/.config/opencode/skills/_shared/…`)
 
 ## Preconditions
 
-The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
-Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
+The `ytmcp` server's tools must be available (see shared conventions §7 for how
+your harness exposes them). If they are missing, run `youtrack-init` to opt the
+repo in.
 
 ## Steps
 
 1. **Read the board.** Read the Ready, In Progress, Backlog, and To Refine
-   columns (`ytmcp_board`, scoped to the relevant states). Ready is the source
+   columns (`ytmcp.board`, scoped to the relevant states). Ready is the source
    of candidates; In Progress shows what is already underway; Backlog and To
    Refine feed the fallback recommendations.
 
@@ -34,27 +36,28 @@ Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
    there and ask whether to start another issue before finishing it. Never
    silently pile up work.
 
-3. **Rank the Ready candidates.** Subgroup coherence applies (shared
-   conventions §4): a Feature's priority is the ceiling for its subtasks.
+3. **Rank the Ready candidates.** Subgroup coherence applies (shared conventions
+   §4): a Feature's priority is the ceiling for its subtasks.
    - A Feature carries no work, so it is never itself a candidate.
-   - Group candidates by parent Feature using `ytmcp_features` (each Feature's
-     priority plus its subtasks). A candidate with no parent forms its own group.
-   - Order groups by priority (`Now` down to `Someday`; no priority last). Within
-     a group, order subtasks by their own priority, descending along the
+   - Group candidates by parent Feature using `ytmcp.features` (each Feature's
+     priority plus its subtasks). A candidate with no parent forms its own
+     group.
+   - Order groups by priority (`Now` down to `Someday`; no priority last).
+     Within a group, order subtasks by their own priority, descending along the
      Feature's dependency order — a subtask that depends on another ranks below
      it. A high-priority Feature's lower-priority subtask can therefore rank
      above another Feature's higher-priority subtask.
    - Skip any issue that is blocked by an unfinished issue, and say which
-     blocker stops it (`ytmcp_issue_read` on links; a blocker counts as
+     blocker stops it (`ytmcp.issue_read` on links; a blocker counts as
      unblocked when it is done). Links are direction-aware.
    - Consider `Size` so the user can judge whether it fits the time available.
 
 4. **Propose.** Present the top candidates — usually one to three — each with a
    one-line rationale: priority, size, area, and whether it is unblocked.
-   Recommend one, then ask which to start. This is a `question` tool decision.
+   Recommend one, then ask which to start. This is a question-tool decision.
 
 5. **Enact the choice.** Move the chosen issue Ready → In Progress with
-   `ytmcp_issue_move(id, from="Ready", to="In Progress")` (the `from` guard
+   `ytmcp.issue_move(id, from="Ready", to="In Progress")` (the `from` guard
    catches stale memory). Confirm the issue id, title, and new column. The next
    step is `youtrack-work`.
 

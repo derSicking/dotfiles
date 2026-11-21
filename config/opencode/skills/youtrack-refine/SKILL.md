@@ -16,13 +16,15 @@ Make "Ready" mean something. The current, unrefined ticket is a proposal to be
 checked against reality — the codebase is the evidence — never a commitment. A
 Ready ticket, by contrast, is trusted: it carries only what was actually agreed.
 
-**First, read the shared conventions:**
-`~/.config/opencode/skills/_shared/youtrack-conventions.md`
+**First, read the shared conventions:** `../_shared/youtrack-conventions.md`,
+relative to this skill's directory (e.g. `~/.claude/skills/_shared/…` or
+`~/.config/opencode/skills/_shared/…`)
 
 ## Preconditions
 
-The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
-Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
+The `ytmcp` server's tools must be available (see shared conventions §7 for how
+your harness exposes them). If they are missing, run `youtrack-init` to opt the
+repo in.
 
 ## Scope
 
@@ -40,9 +42,10 @@ work). No subtasks of subtasks.
 
 A Feature is a bounded, finishable deliverable, not a standing subsystem bucket;
 a subsystem label (UI, Rendering, Engine) is an `Area`, not a Feature. It
-normally has at least two work subtasks. When a Feature is still a stub — created
-as an obvious milestone whose subtasks are not yet cut — refinement fills the set
-out; by Ready it must have a reasonable subtask set (at least two).
+normally has at least two work subtasks. When a Feature is still a stub —
+created as an obvious milestone whose subtasks are not yet cut — refinement
+fills the set out; by Ready it must have a reasonable subtask set (at least
+two).
 
 - **Work tickets** (Bug, User-Story, Chore, Idea) — refined individually →
   Ready.
@@ -79,10 +82,10 @@ ticket.
    - **Feature refinement** — the goal is ensuring the subtask set makes sense,
      not examining each subtask in detail.
 
-2. **Gather.** Read the target tickets — `ytmcp_board` scoped to To Refine (or
-   `ytmcp_search`) to find them, then `ytmcp_issue_read` for each one's full
+2. **Gather.** Read the target tickets — `ytmcp.board` scoped to To Refine (or
+   `ytmcp.search`) to find them, then `ytmcp.issue_read` for each one's full
    detail: description, comments, subtasks, and links. For a Feature, read its
-   whole subtask set (`ytmcp_features` or the subtasks field). When suggesting a
+   whole subtask set (`ytmcp.features` or the subtasks field). When suggesting a
    promotion, gather the Backlog candidate the same way. Check for duplicates.
 
 3. **Validate against reality.** For every ticket:
@@ -128,10 +131,10 @@ ticket.
    Present the whole proposal as a table and let the user approve, edit, or
    reject it item by item. Do not apply anything before that.
 
-5. **Apply the approved changes.** `ytmcp_issue_update` for text/DoD and the
-   `type`/`priority`/`size`/`area` fields; `ytmcp_issue_create` for new/split/
-   promote parts; `ytmcp_link_add` for relations; `ytmcp_comment_add` for
-   evidence (especially when marking obsolete); `ytmcp_issue_move` for To Refine
+5. **Apply the approved changes.** `ytmcp.issue_update` for text/DoD and the
+   `type`/`priority`/`size`/`area` fields; `ytmcp.issue_create` for new/split/
+   promote parts; `ytmcp.link_add` for relations; `ytmcp.comment_add` for
+   evidence (especially when marking obsolete); `ytmcp.issue_move` for To Refine
    → Ready / Obsolete, and Backlog → To Refine for a promotion.
 
 6. **Report** a summary: promoted, re-cut, split, related, requirements settled,

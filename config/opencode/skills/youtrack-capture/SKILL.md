@@ -14,13 +14,15 @@ Record a thought into the tracker with minimal friction. This is the Intent
 state: stay as close to the user's words as possible, add only context you
 actually know, and never expand the idea.
 
-**First, read the shared conventions:**
-`~/.config/opencode/skills/_shared/youtrack-conventions.md`
+**First, read the shared conventions:** `../_shared/youtrack-conventions.md`,
+relative to this skill's directory (e.g. `~/.claude/skills/_shared/…` or
+`~/.config/opencode/skills/_shared/…`)
 
 ## Preconditions
 
-The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
-Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
+The `ytmcp` server's tools must be available (see shared conventions §7 for how
+your harness exposes them). If they are missing, run `youtrack-init` to opt the
+repo in.
 
 ## Steps
 
@@ -43,25 +45,25 @@ Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
    spelling). You must not add design, expanded detail, or opinion, and you must
    not invent facts. When unsure whether a piece of context is welcome, ask.
 
-2. **Search before creating — always.** `ytmcp_search` for the key nouns. Look
+2. **Search before creating — always.** `ytmcp.search` for the key nouns. Look
    for tickets that already cover it, larger tickets it belongs to, and tickets
    it is logically connected to. Present what you found and let the user choose
    a path:
    - **Update** an existing ticket when it already covers the thought.
    - **Attach** it to an existing ticket with a relation or comment —
-     `ytmcp_link_add` (`subtask`/`depend`/`duplicate`/`relates`) or
-     `ytmcp_comment_add`. This is the preferred outcome when there is a logical
+     `ytmcp.link_add` (`subtask`/`depend`/`duplicate`/`relates`) or
+     `ytmcp.comment_add`. This is the preferred outcome when there is a logical
      connection.
    - **Create** a standalone ticket, relating it to any connected tickets.
    - **Skip** it.
 
 3. **Act on the choice.**
    - **Update:** edit the existing ticket so it covers the thought
-     (`ytmcp_issue_update`), and report exactly what changed.
+     (`ytmcp.issue_update`), and report exactly what changed.
    - **Attach:** add the thought to an existing ticket — a comment
-     (`ytmcp_comment_add`) or a relation (`ytmcp_link_add`) that expresses the
+     (`ytmcp.comment_add`) or a relation (`ytmcp.link_add`) that expresses the
      connection.
-   - **Create:** `ytmcp_issue_create` in the project. Title is the tidied
+   - **Create:** `ytmcp.issue_create` in the project. Title is the tidied
      statement. Description holds the user's words plus the known context.
      Attach the `type:` and `area:` fields. Leave it in Backlog — do not set a
      `size` or move to Ready. Add relations to any connected tickets.

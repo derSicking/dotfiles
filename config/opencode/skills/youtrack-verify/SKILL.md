@@ -15,17 +15,19 @@ to Done once the user is satisfied. This is the verification step (the
 `To Verify → Done` transition). The agent does the verification it can, then
 performs the final move with the user's explicit approval.
 
-**First, read the shared conventions:**
-`~/.config/opencode/skills/_shared/youtrack-conventions.md`
+**First, read the shared conventions:** `../_shared/youtrack-conventions.md`,
+relative to this skill's directory (e.g. `~/.claude/skills/_shared/…` or
+`~/.config/opencode/skills/_shared/…`)
 
 ## Preconditions
 
-The `ytmcp` server's tools must be available (OpenCode V2 exposes them through
-Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
+The `ytmcp` server's tools must be available (see shared conventions §7 for how
+your harness exposes them). If they are missing, run `youtrack-init` to opt the
+repo in.
 
 ## Steps
 
-1. **Read the ticket.** `ytmcp_issue_read` — description, definition of done,
+1. **Read the ticket.** `ytmcp.issue_read` — description, definition of done,
    comments, links. The DoD depends on the ticket's `Type` (per the shared
    conventions): User-Story acceptance criteria include manual verification of
    the affordance; Bug needs its acceptance criteria verified; Chore's technical
@@ -48,7 +50,7 @@ Code Mode). If they are missing, run `youtrack-init` to opt the repo in.
 
 5. **Recommend the next move.**
    - All checks pass → ask for the user's approval to mark it Done, then make
-     the move (`ytmcp_issue_move(id, from="To Verify", to="Done")`). The user
+     the move (`ytmcp.issue_move(id, from="To Verify", to="Done")`). The user
      approves; the agent performs the mechanical move.
    - A larger gap or rework → recommend moving the ticket back to To Refine or
      Ready (`youtrack-refine`), rather than Done.
