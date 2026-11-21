@@ -253,6 +253,7 @@ exec ~/.config/sway/inactive-opacity.py
 blur enable
 blur_radius 2
 corner_radius 12
+smart_corner_radius enable
 shadows enable
 shadows_on_csd enable
 
