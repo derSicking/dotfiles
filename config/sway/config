@@ -184,7 +184,7 @@ input "type:pointer" {
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
-    bindsym $mod+t layout tabbed
+    # bindsym $mod+t layout tabbed
     bindsym $mod+s layout toggle split
 
     # Make the current focus fullscreen
