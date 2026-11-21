@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Minecraft Laucher
+Exec=minecraft-launcher
+Icon=
+Comment=
+Path=
+Terminal=false
+StartupNotify=false

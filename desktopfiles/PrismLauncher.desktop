@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Prism Launcher
+Exec=prism-launcher
+Icon=
+Keywords=Minecraft;Modded;MCSR;
+Comment=Minecraft Speedrunning Ranked
+Path=
+Terminal=false
+StartupNotify=false
