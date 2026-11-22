@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Launch a browser instance bound to one of the streaming audio buses.
+#
+# Chrome produces all of its audio from a single AudioService process whose
+# environment is fixed when the browser starts, so giving two windows
+# different sinks requires giving them different browser processes. Each bus
+# therefore gets its own profile directory, which also keeps logins and
+# cookies separate.
+#
+# Usage: chrome-bus <Stream-Game|Stream-Music|Stream-Browser|Ears-Only> [chrome args...]
+# Example: chrome-bus Stream-Music --app=https://music.youtube.com
+
+set -euo pipefail
+
+usage() {
+  echo "usage: chrome-bus <Stream-Game|Stream-Music|Stream-Browser|Ears-Only> [chrome args...]" >&2
+  echo "example: chrome-bus Stream-Music --app=https://music.youtube.com" >&2
+  exit 2
+}
+
+[ $# -ge 1 ] || usage
+
+bus=$1
+shift
+case $bus in
+  Stream-Game|Stream-Music|Stream-Browser|Ears-Only) ;;
+  *) usage ;;
+esac
+
+profile="$HOME/.local/share/chrome-bus/$bus"
+mkdir -p "$profile"
+
+exec env \
+  PULSE_SINK="$bus" \
+  PULSE_PROP_media.role="$bus" \
+  google-chrome \
+    --user-data-dir="$profile" \
+    --no-first-run \
+    --no-default-browser-check \
+    "$@"
