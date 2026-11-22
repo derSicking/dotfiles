@@ -2,3 +2,7 @@ config/tmux/plugins
 config/waybar/theme.css
 config/sway/theme.conf
 config/rofi/theme.rasi
+
+# Generated at runtime
+__pycache__/
+config/opencode/skills/synced/
