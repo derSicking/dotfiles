@@ -1,0 +1,329 @@
+#!/usr/bin/env python3
+
+"""Now-playing overlay for the streaming music browser profile.
+
+Serves an HTML overlay and its data on localhost for use as an OBS browser
+source. Only media reported by the browser process whose command line
+matches PROFILE_MARKER is considered, so playback from any other browser
+profile never reaches the overlay.
+
+Endpoints:
+    /       the overlay page
+    /now    current track as JSON
+    /art    album art bytes
+
+Run with --once to print the current state and exit.
+"""
+
+import json
+import os
+import re
+import subprocess
+import sys
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+HOST = "127.0.0.1"
+PORT = int(os.environ.get("MUSIC_NOW_PORT", "8787"))
+
+# Only a browser started by chrome-bus with this profile may drive the overlay.
+PROFILE_MARKER = "/chrome-bus/Stream-Music"
+
+# Anything longer than this is a live stream rather than a track, and gets no
+# progress bar.
+LIVE_LENGTH_LIMIT = 6 * 3600
+
+
+def run(*cmd):
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return result.stdout.strip()
+
+
+def players():
+    out = run("busctl", "--user", "list", "--no-legend")
+    return [
+        line.split()[0]
+        for line in out.splitlines()
+        if line.startswith("org.mpris.MediaPlayer2.chromium")
+    ]
+
+
+def belongs_to_music_profile(name):
+    status = run("busctl", "--user", "status", name)
+    match = re.search(r"^PID=(\d+)$", status, re.M)
+    if not match:
+        return False
+    try:
+        with open(f"/proc/{match.group(1)}/cmdline", "rb") as handle:
+            cmdline = handle.read().replace(b"\0", b" ").decode(errors="replace")
+    except OSError:
+        return False
+    return PROFILE_MARKER in cmdline
+
+
+def read_player(name):
+    short = name.split(".MediaPlayer2.")[-1]
+    fields = run(
+        "playerctl", "-p", short, "metadata", "--format",
+        "{{title}}\x1f{{artist}}\x1f{{album}}\x1f{{mpris:artUrl}}\x1f{{mpris:length}}",
+    ).split("\x1f")
+    fields += [""] * (5 - len(fields))
+    title, artist, album, art_url, length = fields[:5]
+
+    try:
+        length_s = int(length) / 1_000_000
+    except ValueError:
+        length_s = 0.0
+    try:
+        position_s = float(run("playerctl", "-p", short, "position"))
+    except ValueError:
+        position_s = 0.0
+
+    return {
+        "status": run("playerctl", "-p", short, "status"),
+        "title": title,
+        "artist": artist,
+        "album": album,
+        "art_url": art_url,
+        "length": length_s,
+        "position": position_s,
+    }
+
+
+def current():
+    """The music-profile player, preferring one that is actually playing."""
+    paused = None
+    for name in players():
+        if not belongs_to_music_profile(name):
+            continue
+        info = read_player(name)
+        if info["status"] == "Playing":
+            return info
+        paused = paused or info
+    return paused
+
+
+def art_path(info):
+    url = (info or {}).get("art_url") or ""
+    if not url.startswith("file://"):
+        return None
+    path = url[7:]
+    return path if os.path.exists(path) else None
+
+
+def payload():
+    info = current()
+    if not info:
+        return {"playing": False}
+
+    path = art_path(info)
+    url = info["art_url"] or ""
+    art, art_id = None, None
+    if url.startswith("http"):
+        art, art_id = url, url
+    elif path:
+        art = "/art"
+        try:
+            stat = os.stat(path)
+            art_id = f"{stat.st_mtime_ns}-{stat.st_size}"
+        except OSError:
+            art_id = None
+
+    return {
+        "playing": info["status"] == "Playing",
+        "status": info["status"],
+        "title": info["title"],
+        "artist": info["artist"],
+        "album": info["album"],
+        "position": round(info["position"], 2),
+        "length": round(info["length"], 2),
+        "art": art,
+        "art_id": art_id,
+    }
+
+
+def art_bytes():
+    path = art_path(current())
+    if not path:
+        return None, None
+    try:
+        with open(path, "rb") as handle:
+            data = handle.read()
+    except OSError:
+        return None, None
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        mime = "image/png"
+    elif data[:2] == b"\xff\xd8":
+        mime = "image/jpeg"
+    else:
+        mime = "application/octet-stream"
+    return data, mime
+
+
+PAGE = """<!doctype html>
+<meta charset="utf-8">
+<title>now playing</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: transparent; overflow: hidden;
+    font-family: "Inter", "Cantarell", system-ui, sans-serif;
+    color: #f2f2f4; -webkit-font-smoothing: antialiased;
+  }
+  /* Everything scales from the source height (1vh = 1% of it), so the card
+     keeps its proportions at any size. Width only affects how much text fits. */
+  :root { --pad: 6vh; }
+  #card {
+    box-sizing: border-box;
+    display: flex; align-items: center; gap: 8vh;
+    width: 100%; height: 100%;
+    padding: var(--pad);
+    background: rgba(18, 18, 21, 0.82);
+    border-radius: 11vh;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  #card.show { opacity: 1; }
+  #art {
+    /* Explicit size rather than height:100% — flex items default to
+       min-height:auto, which for an image means its intrinsic height and
+       stops it shrinking below the source file's 120px. */
+    height: calc(100vh - 2 * var(--pad));
+    width: calc(100vh - 2 * var(--pad));
+    min-height: 0; min-width: 0;
+    border-radius: 7vh; object-fit: cover;
+    background: #2a2a2e; flex: 0 0 auto;
+  }
+  #meta {
+    min-width: 0; flex: 1 1 auto;
+    display: flex; flex-direction: column; gap: 1vh;
+  }
+  #title {
+    font-size: 22vh; font-weight: 650; line-height: 1.1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #artist {
+    font-size: 14.5vh; color: #a7a7ad;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #bar {
+    margin-top: 6vh; height: 3.2vh; border-radius: 2vh;
+    background: rgba(255, 255, 255, 0.14); overflow: hidden;
+  }
+  #bar.hide { display: none; }
+  #fill {
+    height: 100%; width: 0%; background: #f2f2f4;
+    transition: width 1s linear;
+  }
+</style>
+<div id="card">
+  <img id="art" alt="">
+  <div id="meta">
+    <div id="title"></div>
+    <div id="artist"></div>
+    <div id="bar"><div id="fill"></div></div>
+  </div>
+</div>
+<script>
+  const card = document.getElementById("card");
+  const art = document.getElementById("art");
+  const title = document.getElementById("title");
+  const artist = document.getElementById("artist");
+  const bar = document.getElementById("bar");
+  const fill = document.getElementById("fill");
+  let lastKey = null;
+  let lastArt = null;
+  let pendingArt = null;
+
+  async function tick() {
+    try {
+      const reply = await fetch("/now", {cache: "no-store"});
+      const data = await reply.json();
+      if (!data.playing) {
+        card.classList.remove("show");
+        return;
+      }
+      const key = (data.title || "") + "\\u0000" + (data.artist || "");
+      if (key !== lastKey) {
+        lastKey = key;
+        title.textContent = data.title || "Unknown track";
+        artist.textContent = data.artist || "";
+        fill.style.width = "0%";
+      }
+      if (!data.art) {
+        art.style.visibility = "hidden";
+        lastArt = null;
+      } else if (data.art_id !== lastArt) {
+        const url = data.art + (data.art.startsWith("/") ? "?v=" + encodeURIComponent(data.art_id) : "");
+        pendingArt = new Image();
+        pendingArt.onload = () => {
+          art.src = url;
+          art.style.visibility = "visible";
+          lastArt = data.art_id;
+        };
+        pendingArt.src = url;
+      }
+      const timed = data.length > 0 && data.length <= 21600;
+      bar.classList.toggle("hide", !timed);
+      if (timed) {
+        const percent = Math.min(100, Math.max(0, (data.position / data.length) * 100));
+        fill.style.width = percent.toFixed(2) + "%";
+      }
+      card.classList.add("show");
+    } catch (err) {
+      card.classList.remove("show");
+    }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+"""
+
+
+class Handler(BaseHTTPRequestHandler):
+    def log_message(self, *args):
+        pass
+
+    def send(self, code, body, content_type, extra=None):
+        self.send_response(code)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Cache-Control", "no-store")
+        for key, value in (extra or {}).items():
+            self.send_header(key, value)
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self):
+        route = self.path.split("?")[0]
+        if route == "/":
+            self.send(200, PAGE.encode(), "text/html; charset=utf-8")
+        elif route == "/now":
+            self.send(200, json.dumps(payload()).encode(), "application/json")
+        elif route == "/art":
+            data, mime = art_bytes()
+            if data:
+                self.send(200, data, mime)
+            else:
+                self.send(404, b"no art", "text/plain")
+        else:
+            self.send(404, b"not found", "text/plain")
+
+
+def main():
+    if "--once" in sys.argv[1:]:
+        print(json.dumps(payload(), indent=2))
+        return
+    try:
+        server = ThreadingHTTPServer((HOST, PORT), Handler)
+    except OSError as exc:
+        print(f"music-now: cannot bind {HOST}:{PORT}: {exc}", file=sys.stderr)
+        return
+    print(f"music-now listening on http://{HOST}:{PORT}/", flush=True)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
