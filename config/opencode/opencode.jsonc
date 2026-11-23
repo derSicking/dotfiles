@@ -31,6 +31,14 @@
   },
   "mcp": {
     "servers": {
+      "gitea": {
+        "type": "local",
+        "command": ["/home/frederik/.local/bin/gitea-mcp", "-t", "stdio"],
+        "environment": {
+          "GITEA_HOST": "https://git.dersicking.de",
+          "GITEA_ACCESS_TOKEN_FILE": "/home/frederik/.config/gitea-mcp/token",
+        },
+      },
       "ytmcp": {
         "type": "remote",
         "url": "https://ytmcp.dersicking.de",
